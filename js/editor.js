@@ -5,10 +5,8 @@ const resetCodeBtn = document.getElementById('btn-clear');
 
 // Setup Ace
 let codeEditor = ace.edit("editor");
-let defaultCode = `console.log(\`संस्कृत श्लोक - Sanskrit Shlok
-अन्यायोपार्जितं वित्तं दस वर्षाणि तिष्ठति।
-प्राप्ते चैकादशेवर्षे समूलं तद् विनश्यति।।
-अर्थ– गलत तरीके से और अन्याय करके कमाया हुआ धन 10 वर्षों तक ही संचित किया हुआ रह सकता है। लेकिन वह धन अपने मूलधन सहित पूरा ग्यारहवें वर्ष नष्ट हो जाता है।\`)`;
+let session = codeEditor.session
+let defaultCode = `वद् "हेलो विश्व!";`;
 let consoleMessages = [];
 
 let editorLib = {
@@ -33,20 +31,19 @@ let editorLib = {
             consoleLogList.appendChild(newLogItem);
         })
     },
-    // Configure Ace
     init() {
-    
-        // Set Options
+        // Configure Ace Options
         codeEditor.setOptions({
-            fontFamily: 'EK Mukta',
-            fontSize: '1.40em;',
             wrap: true,   // wrap text to view
-            indentedSoftWrap: false, 
+            indentedSoftWrap: false,
             behavioursEnabled: false, // disable autopairing of brackets and tags        
         });
 
         // Set Default Code
         codeEditor.setValue(defaultCode);
+    },
+    add(text) {
+        session.insert(session.selection.getCursor(), " " + text + " "); // Insert the text at the current cursor position
     }
 }
 

@@ -7,32 +7,27 @@
     <link rel="stylesheet" href="css/styles.css">
 
     <meta name="description"
-        content="https://vedicscript.github.io/onlinecompiler world first programing langage in sankrit">
-    <meta name="keywords" content="vedicscript, vedic,script, programing langage">
-    <meta name="author" content="">
-    <meta name="robots" content="">
-    <meta property="og:locale" content="">
-    <meta property="og:type" content="">
-    <meta property="og:title" content="Vedic Script Online Compiler">
+        content="https://vedicscript.github.io/online-ide world first programing langage in sankrit">
+    <meta name="keywords"
+        content="vedicscript, vedic,script, programing langage, sanskrit, ptprashanttripathi, Pt. Prashant Tripathi">
+    <meta name="author" content="Pt. Prashant Tripathi">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Vedic Script Online IDE">
     <meta property="og:description"
-        content="https://vedicscript.github.io/onlinecompiler world first programing langage in sankrit">
-    <meta property="og:url" content="https://vedicscript.github.io/onlinecompiler/">
-    <meta property="og:site_name" content="">
-    <meta property="article:author" content="">
-    <meta property="article:tag" content="">
-    <meta property="article:section" content="">
-    <meta property="article:published_time" content="">
-    <meta property="article:modified_time" content="">
-    <meta property="og:updated_time" content="">
-    <meta property="og:image"
-        content="">
+        content="https://vedicscript.github.io/online-ide world first programing langage in sankrit">
+    <meta property="og:url" content="https://vedicscript.github.io/online-ide/">
+    <meta property="og:site_name" content="Vedic Script Online IDE">
+    <meta property="article:author" content="Pt. Prashant Tripathi">
+    <meta property="article:tag"
+        content="vedicscript, vedic,script, programing langage, sanskrit, ptprashanttripathi, Pt. Prashant Tripathi">
+    <meta property="og:image" content="https://avatars.githubusercontent.com/u/103427648?s=200&v=4">
     <meta name="twitter:card" content="">
     <meta name="twitter:description"
-        content="">
-    <meta name="twitter:title" content="">
-    <meta name="twitter:image"
-        content="">
-    <meta name="twitter:creator" content="">
+        content="https://vedicscript.github.io/online-ide world first programing langage in sankrit">
+    <meta name="twitter:title" content="Vedic Script Online IDE">
+    <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/103427648?s=200&v=4">
+    <meta name="twitter:creator" content="Pt. Prashant Tripathi">
 </head>
 
 <body>
@@ -44,9 +39,9 @@
         </h3>
         <nav>
             <ul>
-                <li>Home</li>
-                <li>Docs</li>
-                <li>Github</li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/">Docs</a></li>
+                <li><a href="https://github.com/vedicscript/vedicscript">Github</a></li>
             </ul>
         </nav>
     </header>
@@ -65,26 +60,26 @@
             </div>
             <div class="hint-area">
                 <h4 style="color: grey;">#KEYWORDS</h4>
-                <button>वद्</button>
-                <button>यदि</button>
-                <button>अथ​</button>
-                <button>सत्य​</button>
-                <button>असत्य​</button>
-                <button>सूत्रम्</button>
-                <button>फल​</button>
-                <button>चक्रम्</button>
-                <button>पर्यन्तम्</button>
-                <button>विराम्</button>
-                <button>निर्देस​</button>
-                <button>यद​</button>
-                <button>यदभवे</button>
-                <button>अवहन्</button>
+                <button onclick="editorLib.add('वद्');">वद्</button>
+                <button onclick="editorLib.add('यदि');">यदि</button>
+                <button onclick="editorLib.add('अथ​');">अथ​</button>
+                <button onclick="editorLib.add('सत्य​');">सत्य​</button>
+                <button onclick="editorLib.add('असत्य​');">असत्य​</button>
+                <button onclick="editorLib.add('सूत्रम्');">सूत्रम्</button>
+                <button onclick="editorLib.add('फल​');">फल​</button>
+                <button onclick="editorLib.add('चक्रम्');">चक्रम्</button>
+                <button onclick="editorLib.add('पर्यन्तम्');">पर्यन्तम्</button>
+                <button onclick="editorLib.add('विराम्');">विराम्</button>
+                <button onclick="editorLib.add('निर्देश');">निर्देश</button>
+                <button onclick="editorLib.add('यद​');">यद​</button>
+                <button onclick="editorLib.add('यदभवे');">यदभवे</button>
+                <button onclick="editorLib.add('अवहन्');">अवहन्</button>
             </div>
         </div>
     </div>
     <!-- Required Libraries -->
-    <script src="js/ace-editor/src-min/ace.js"></script>
-    <script src="js/vedicscript.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.min.js" integrity="sha512-hDyKEpCc9jPn3u2VffFjScCtNqZI+BAbThAhhDYqqqZbxMqmTSNIgdU0OU9BRD/8wFxHIWLAo561hh9fW7j6sA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/vedicscript"></script>
 
     <!-- Custom Scripts -->
     <script src="js/editor.js"></script>

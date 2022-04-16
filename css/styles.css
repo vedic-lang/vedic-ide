@@ -17,7 +17,7 @@ header {
 
 header h3 {
     color: #424242;
-    font-size: 2em;
+    font-size: 2.5em;
     margin: .6em;
     display: inline-block
 }
@@ -29,10 +29,15 @@ nav ul {
 }
 
 nav li {
-    color: #4b4f58;
     font-size: 1.41em;
     display: inline-block;
     margin: 1em .5em
+}
+
+nav li a {
+    color: #4b4f58;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .code-area {
@@ -53,7 +58,6 @@ nav li {
     box-sizing: border-box;
     max-width: 100%;
     width: 95%;
-    font: 100% Consolas, Monaco, monospace;
     margin-bottom: 50px
 }
 
@@ -63,6 +67,12 @@ nav li {
     float: left;
     box-sizing: border-box;
     padding: .4em
+}
+
+.ace_editor,
+.ace_editor * {
+    font-family: 'EK Mukta';
+    font-size: 13pt;
 }
 
 .container:after {
@@ -128,11 +138,13 @@ button {
     font-size: 1.5em;
 }
 
-.log--default,.log--string {
+.log--default,
+.log--string {
     color: #000;
 }
 
-.log--number ,.log--boolean {
+.log--number,
+.log--boolean {
     color: blue;
 }
 
