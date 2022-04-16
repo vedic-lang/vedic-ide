@@ -54,7 +54,7 @@ executeCodeBtn.addEventListener('click', () => {
 
     // Run the user code
     try {
-        eval(userCode);
+        vedic(userCode);
     } catch (err) {
         console.error(err);
     }
