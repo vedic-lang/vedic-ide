@@ -22,8 +22,7 @@ header h3 {
     display: inline-block
 }
 
-nav li,
-nav ul {
+nav li, nav ul {
     margin: 0;
     padding: 0
 }
@@ -61,16 +60,14 @@ nav li a {
     margin-bottom: 50px
 }
 
-.console-area,
-.editor-area {
+.console-area, .editor-area {
     width: 100%;
     float: left;
     box-sizing: border-box;
     padding: .4em
 }
 
-.ace_editor,
-.ace_editor * {
+.ace_editor, .ace_editor * {
     font-family: 'EK Mukta';
     font-size: 13pt;
 }
@@ -112,7 +109,7 @@ sub {
 }
 
 .hint-area button {
-    margin: 0.1em 0;
+    margin: 0.1em;
     color: #555;
     text-align: center;
     font-size: 1.6em;
@@ -128,6 +125,19 @@ button {
     transition: all .2s ease-in-out
 }
 
+#examples-wrapper {
+    display: inline-block;
+    float: right;
+    vertical-align: middle;
+    line-height: 38px;
+    padding: 0 12px;
+}
+
+#examples-wrapper label {
+    font-size: 13px;
+    padding-right: 5px;
+}
+
 /* Editor Console Logs */
 #console-logs {
     padding: 0 0.5em;
@@ -138,13 +148,11 @@ button {
     font-size: 1.5em;
 }
 
-.log--default,
-.log--string {
+.log--default, .log--string {
     color: #000;
 }
 
-.log--number,
-.log--boolean {
+.log--number, .log--boolean {
     color: blue;
 }
 
@@ -168,7 +176,7 @@ button {
     color: yellow;
 }
 
-@media (min-width:500px) {
+@media (min-width: 500px) {
     header {
         padding: 0.5em 6em;
     }
