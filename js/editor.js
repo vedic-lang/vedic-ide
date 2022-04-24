@@ -72,3 +72,15 @@ resetCodeBtn.addEventListener('click', () => {
 })
 
 editorLib.init();
+
+//add keyword button dnymically
+let Keyword = ["मान","वद्","यदि","अथ","सत्य","असत्य","सूत्र","फल","चक्रम्","पर्यन्तम्","विराम्","निर्देश","यद","यदभावे","अवहन्"];
+let KeywordArea = document.getElementsByClassName('hint-area')[0];
+Keyword.forEach(keyword => {
+    let newBtn = document.createElement('button');
+    newBtn.textContent = keyword;
+    newBtn.addEventListener('click', () => {
+        editorLib.add(keyword);
+    });
+    KeywordArea.appendChild(newBtn);
+});
