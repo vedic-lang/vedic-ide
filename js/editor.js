@@ -7,7 +7,7 @@ const examplesElm = document.getElementById('examples-select');
 // Setup Ace
 let codeEditor = ace.edit("editor");
 let session = codeEditor.session;
-let defaultCode = `वद् "हेलो विश्व!";`;
+let defaultCode = "मान आयु = ३२;\nयदि (आयु == २५) {\n  वद् \"वयं सम वयस्काः एव\"; # We're the same age\n}\nअथ यदि (आयु > २५) {\n  वद् \"वयं सम वयस्काः न एव\"; # We're not the same age\n}\nअथ {\n  वद् \"मम अपेक्षया कनिष्ठः वा\"; # Younger to me\n}";
 let consoleMessages = [];
 
 let editorLib = {
@@ -56,6 +56,9 @@ let editorLib = {
 executeCodeBtn.addEventListener("click", ()=>{
     // Get input from the code editor
     const userCode = codeEditor.getValue();
+    
+    // Clear the array first
+    consoleMessages = [];
 
     // Run the user code
     try {
