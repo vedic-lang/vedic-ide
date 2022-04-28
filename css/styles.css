@@ -3,34 +3,36 @@
 
 body {
     background: linear-gradient(9deg, #fefffc 0, #f9f9f9 100%) fixed;
-    font-family: 'EK Mukta', Ubuntu, Raleway, HelveticaNeue, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "EK Mukta", Ubuntu, Raleway, HelveticaNeue, "Helvetica Neue",
+        Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
-    font-size: 62.5%
+    font-size: 62.5%;
 }
 
 header {
-    padding: .5em 1em;
+    padding: 0.5em 1em;
     display: flex;
-    justify-content: space-between
+    justify-content: space-between;
 }
 
 header h3 {
     color: #424242;
     font-size: 2.5em;
-    margin: .6em;
-    display: inline-block
+    margin: 0.6em;
+    display: inline-block;
 }
 
-nav li, nav ul {
+nav li,
+nav ul {
     margin: 0;
-    padding: 0
+    padding: 0;
 }
 
 nav li {
     font-size: 1.41em;
     display: inline-block;
-    margin: 1em .5em
+    margin: 1em 0.5em;
 }
 
 nav li a {
@@ -47,7 +49,7 @@ nav li a {
     bottom: 0;
     left: 0;
     right: 0;
-    border: 1px solid #e0e0e0
+    border: 1px solid #e0e0e0;
 }
 
 .container {
@@ -57,25 +59,30 @@ nav li a {
     box-sizing: border-box;
     max-width: 100%;
     width: 95%;
-    margin-bottom: 50px
+    margin-bottom: 50px;
 }
 
-.console-area, .editor-area {
+.console-area,
+.editor-area {
     width: 100%;
     float: left;
     box-sizing: border-box;
-    padding: .4em
+    padding: 0.4em;
 }
 
-.ace_editor, .ace_editor * {
-    font-family: 'EK Mukta';
-    font-size: 13pt;
+.ace_editor,
+.ace_editor * {
+    font-family: "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas",
+        monospace !important;
+    font-size: 13pt !important;
+    line-height: 1.5em;
+    /* letter-spacing: 0 !important; */
 }
 
 .container:after {
     content: "";
     display: table;
-    clear: both
+    clear: both;
 }
 
 #output {
@@ -89,23 +96,23 @@ nav li a {
 
 sub {
     font-size: 12px;
-    position: relative
+    position: relative;
 }
 
 .editor-area button {
-    margin: .4em;
+    margin: 0.4em;
     padding: 0 30px;
     color: #555;
     text-align: center;
     font-size: 1.2em;
     font-weight: 600;
     line-height: 1.5rem;
-    letter-spacing: .1rem;
+    letter-spacing: 0.1rem;
     text-transform: uppercase;
     background-color: transparent;
     border-radius: 4px;
     border: 1px solid #bbb;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .hint-area button {
@@ -114,15 +121,15 @@ sub {
     text-align: center;
     font-size: 1.6em;
     line-height: 1.5rem;
-    letter-spacing: .04rem;
+    letter-spacing: 0.04rem;
     background-color: transparent;
     border-radius: 4px;
     border: 1px solid #bbb;
-    cursor: pointer
+    cursor: pointer;
 }
 
 button {
-    transition: all .2s ease-in-out
+    transition: all 0.2s ease-in-out;
 }
 
 #examples-wrapper {
@@ -148,11 +155,13 @@ button {
     font-size: 1.5em;
 }
 
-.log--default, .log--string {
+.log--default,
+.log--boolean {
     color: #000;
 }
 
-.log--number, .log--boolean {
+.log--number,
+.log--string {
     color: blue;
 }
 
@@ -182,18 +191,18 @@ button {
     }
 
     #output-area {
-        height: 30%
+        height: 30%;
     }
 
     .code-area {
-        height: 70%
+        height: 70%;
     }
 
     .console-area {
-        width: 40%
+        width: 40%;
     }
 
     .editor-area {
-        width: 55%
+        width: 55%;
     }
 }
