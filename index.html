@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="css/styles.css" />
   <!-- add icon link -->
-  <link rel="icon" href="https://avatars.githubusercontent.com/u/103427648?s=200&v=4" type="image/x-icon">
+  <link rel="icon" href="https://avatars.githubusercontent.com/u/103427648?s=200&v=4" type="image/x-icon" />
   <meta name="description"
     content="https://vedic-lang.github.io/vedic-ide world first programming language in sanskrit" />
   <meta name="keywords"
@@ -48,31 +48,36 @@
 
   <div class="container">
     <div class="editor-area">
-      <h3 style="color: grey;float:left">#EDITOR AREA</h3>
+      <h3 style="color: grey; float: left">#EDITOR AREA</h3>
       <span id="examples-wrapper">
-        <label for="examples-select">Example:</label>
-        <select name="examples" id="examples-select"></select>
+        <label for="btn-toggle" title="Click here to turn on/off the Transliteration">Transliteration:</label>
+        <input class="toggle" id="btn-toggle" type="checkbox" title="Click here to turn on/off the Transliteration" checked></input>
+        <label for="examples-select" title="Click here to load the sample code">Example:</label>
+        <select name="examples" id="examples-select" title="Click here to load the sample code"></select>
       </span>
       <div id="editor" class="code-area"></div>
-      <button id="btn-run">Run</button>
-      <button id="btn-clear">Clear</button>
+      <button id="btn-run" title="Click here to run the code">Run</button>
+      <button id="btn-clear" title="Click here to clear the console area">Clear</button>
     </div>
     <div class="console-area">
       <h3 style="color: grey">#CONSOLE</h3>
       <div id="output">
-        <ul id="console-logs"></ul>
+        <ul id="console-logs"><li><pre class="log log--object">&gt; "output will come up here"</pre></li></ul>
       </div>
-      <div class="hint-area">
+      <!--div class="hint-area">
         <h3 style="color: grey">#KEYWORDS</h3>
-        <!-- <button onclick="editorLib.add('वद्');">वद्</button> -->
-      </div>
+      </div-->
     </div>
   </div>
   <!-- Required Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.min.js"
     integrity="sha512-hDyKEpCc9jPn3u2VffFjScCtNqZI+BAbThAhhDYqqqZbxMqmTSNIgdU0OU9BRD/8wFxHIWLAo561hh9fW7j6sA=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ext-language_tools.min.js"
+    integrity="sha512-S7Whi8oQAQu/MK6AhBWufIJIyOvqORj+/1YDM9MaHeRalsZjzyYS7Usk4fsh+6J77PUhuk5v/BxaMDXRdWd1KA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="js/vedic.js" type="text/javascript"></script>
+  <script src="https://unpkg.com/@sanskrit-coders/sanscript@1.1.8/sanscript.js"></script>
 
   <!-- Custom Scripts -->
   <script src="js/editor.js"></script>

@@ -3,12 +3,13 @@ const consoleLogList = document.getElementById("console-logs");
 const executeCodeBtn = document.getElementById("btn-run");
 const resetCodeBtn = document.getElementById("btn-clear");
 const examplesElm = document.getElementById("examples-select");
+const toggleBtn = document.getElementById("btn-toggle");
 
 // Setup Ace
-let codeEditor = ace.edit("editor");
-let session = codeEditor.session;
+let editor = ace.edit("editor");
+let session = editor.session;
 let defaultCode =
-  'मान आयु = ३२;\nयदि (आयु == २५) {\n  वद् "वयं सम वयस्काः एव"; # We\'re the same age\n}\nअथ यदि (आयु > २५) {\n  वद् "वयं सम वयस्काः न एव"; # We\'re not the same age\n}\nअथ {\n  वद् "मम अपेक्षया कनिष्ठः वा"; # Younger to me\n}';
+  '# We have inbuilt transliteration tool\n# your input will be translitered to sanskrit once you press spacebar or enter key\n\nमान आयु = ३२;\nयदि (आयु == २५) {\n  वद् "वयं सम वयस्काः एव"; # We\'re the same age\n}\nअथ यदि (आयु > २५) {\n  वद् "वयं सम वयस्काः न एव"; # We\'re not the same age\n}\nअथ {\n  वद् "मम अपेक्षया कनिष्ठः वा"; # Younger to me\n}';
 let consoleMessages = [];
 
 let editorLib = {
@@ -35,17 +36,49 @@ let editorLib = {
   },
   init() {
     // Configure Ace Options
-    codeEditor.setOptions({
+    editor.setOptions({
       wrap: true,
       // wrap text to view
       showPrintMargin: false,
       indentedSoftWrap: false,
       behavioursEnabled: false,
+      enableBasicAutocompletion: [
+        {
+          getCompletions: function (editor, session, pos, prefix, callback) {
+            var kwList = [
+              ["maana", "मान"],
+              ["vad", "वद्"],
+              ["yadi", "यदि"],
+              ["atha", "अथ"],
+              ["satya", "सत्य"],
+              ["asatya", "असत्य"],
+              ["sUtra", "सूत्र"],
+              ["phala", "फल"],
+              ["chakram", "चक्रम्"],
+              ["paryantam", "पर्यन्तम्"],
+              ["virAm", "विराम्"],
+              ["nirdesha", "निर्देश"],
+              ["yada", "यद"],
+              ["yadabhAve", "यदभावे"],
+              ["avahan", "अवहन्"],
+            ];
+            callback(
+              null,
+              kwList.map(function (kw) {
+                return {
+                  value: kw[0],
+                  meta: kw[1],
+                }
+              }))
+          }
+        }],
+      // to make popup appear automatically, without explicit _ctrl+space_
+      enableLiveAutocompletion: true,
       // disable autopairing of brackets and tags
     });
 
     // Set Default Code
-    codeEditor.setValue(defaultCode);
+    editor.setValue(defaultCode);
   },
   add(text) {
     session.insert(session.selection.getCursor(), " " + text + " ");
@@ -56,7 +89,7 @@ let editorLib = {
 // Events
 executeCodeBtn.addEventListener("click", () => {
   // Get input from the code editor
-  const userCode = codeEditor.getValue();
+  const userCode = editor.getValue();
 
   // Clear the array first
   consoleMessages = [];
@@ -73,33 +106,14 @@ executeCodeBtn.addEventListener("click", () => {
 });
 
 resetCodeBtn.addEventListener("click", () => {
-  // Clear ace editor
-  // codeEditor.setValue(defaultCode);
-
   // Clear console messages
   editorLib.clearConsoleScreen();
 });
 
 editorLib.init();
 
-//add keyword button dnymically
-let Keyword = [
-  "मान",
-  "वद्",
-  "यदि",
-  "अथ",
-  "सत्य",
-  "असत्य",
-  "सूत्र",
-  "फल",
-  "चक्रम्",
-  "पर्यन्तम्",
-  "विराम्",
-  "निर्देश",
-  "यद",
-  "यदभावे",
-  "अवहन्",
-];
+/*/add keyword button dnymically
+let Keyword = ["मान", "वद्", "यदि", "अथ", "सत्य", "असत्य", "सूत्र", "फल", "चक्रम्", "पर्यन्तम्", "विराम्", "निर्देश", "यद", "यदभावे", "अवहन्"];
 let KeywordArea = document.getElementsByClassName("hint-area")[0];
 Keyword.forEach((keyword) => {
   let newBtn = document.createElement("button");
@@ -109,6 +123,7 @@ Keyword.forEach((keyword) => {
   });
   KeywordArea.appendChild(newBtn);
 });
+*/
 
 // examples
 const examples = new Map([
@@ -148,36 +163,36 @@ const examples = new Map([
 ]);
 for (let name of examples.keys()) {
   const elm = document.createElement("option");
+  if (name === "yadiath.ved") elm.selected = true;
   elm.innerText = name;
   examplesElm.appendChild(elm);
 }
 examplesElm.addEventListener("change", (evt) => {
   if (evt.target.value) {
-    codeEditor.setValue(examples.get(evt.target.value), -1);
+    editor.setValue(examples.get(evt.target.value), -1);
     editorLib.clearConsoleScreen();
     executeCodeBtn.click();
   }
 });
-
-// transletor
-// codeEditor.commands.addCommand({
-//   name: "replace",
-//   bindKey: { win: "Space", mac: "Space" },
-//   exec: update,
-//   readOnly: true,
-// });
-// function update() {
-//   var val = session.getValue().split(" ").pop();
-//   fetch(
-//     `https://www.google.com/inputtools/request?text=${val}&ime=transliteration_en_sa&num=5&cp=0&cs=0&ie=utf-8&oe=utf-8&app=vedic`
-//   )
-//     .then(function (response) {
-//       return response.json();
-//     })
-//     .then(function (res) {
-//       window.console.log(JSON.stringify(res, null, 2));
-//     })
-//     .catch(function (error) {
-//       console.log("Error: " + error);
-//     });
-// }
+editor.container.addEventListener("keydown", (key) => {
+  if (toggleBtn.checked) {
+    if (key.code == "Space" || key.code == "Enter") {
+      let pos = session.selection.getCursor();
+      let text = session.doc.$lines[pos.row]
+        .slice(0, pos.column)
+        .split(" ")
+        .pop();
+      let sanskrit = Sanscript.t(text, "itrans", "devanagari");
+      editor.session.replace(
+        {
+          start: {
+            row: pos.row,
+            column: pos.column - text.length,
+          },
+          end: pos,
+        },
+        sanskrit
+      );
+    }
+  }
+});

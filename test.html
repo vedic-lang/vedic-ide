@@ -1,0 +1,45 @@
+<head>
+  <!-- integrity removed for simplicity -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js"></script> -->
+  <script src="https://unpkg.com/@sanskrit-coders/sanscript@1.1.8/sanscript.js"></script>
+  <style>
+    #describeInput {
+      width: 80%;
+      height: 300px;
+    }
+  </style>
+</head>
+
+<body>
+  Try typping "hell" here:<br />
+  <div id="describeInput"></div>
+</body>
+<script>
+  let editor = ace.edit("describeInput");
+  let session = editor.session;
+  editor.container.addEventListener("keydown", (key) => {
+    if (key.code == "Space") {
+      let pos = session.selection.getCursor();
+      let text = session.doc.$lines[pos.row]
+        .slice(0, pos.column)
+        .split(" ")
+        .pop();
+      let sanskrit = Sanscript.t(text, "itrans", "devanagari");
+      editor.session.replace(
+        {
+          start: {
+            row: pos.row,
+            column: pos.column - text.length,
+          },
+          end: pos,
+        },
+        sanskrit
+      );
+      editor.selection.moveCursorToPosition({
+        row: pos.row,
+        column: pos.column - text.length + sanskrit.length,
+      });
+    }
+  });
+</script>

@@ -30,7 +30,7 @@ nav ul {
 }
 
 nav li {
-    font-size: 1.41em;
+    font-size: 1.7em;
     display: inline-block;
     margin: 1em 0.5em;
 }
@@ -58,7 +58,7 @@ nav li a {
     padding: 0 20px;
     box-sizing: border-box;
     max-width: 100%;
-    width: 95%;
+    width: 100%;
     margin-bottom: 50px;
 }
 
@@ -89,7 +89,7 @@ nav li a {
     background: #f5f2f0;
     box-sizing: border-box;
     border: 1px solid #e0e0e0;
-    height: 45%;
+    height: 50%;
     padding: 0em;
     overflow: auto;
 }
@@ -162,7 +162,7 @@ button {
 
 .log--number,
 .log--string {
-    color: blue;
+    color: darkcyan; /* blue; */
 }
 
 .log--undefined {
@@ -186,14 +186,15 @@ button {
 }
 
 @media (min-width: 500px) {
+    .container {
+        width: 95%;
+    }
+
     header {
         padding: 0.5em 6em;
     }
 
-    #output-area {
-        height: 30%;
-    }
-
+    #output,
     .code-area {
         height: 70%;
     }
@@ -205,4 +206,12 @@ button {
     .editor-area {
         width: 55%;
     }
+}
+
+.ace_gutter>.ace_layer {
+    width: 30px !important;
+}
+
+.ace_gutter-cell {
+    padding-left: 0 !important;
 }
