@@ -21,7 +21,7 @@
 
 👤 **Pt. Prashant Tripathi**
 
-* Website: ptprashanttripathi.github.io
+* Website: [ptprashanttripathi.github.io](https://ptprashanttripathi.github.io)
 * Twitter: [@ptprashant09](https://twitter.com/ptprashant09)
 * Github: [@ptprashanttripathi](https://github.com/ptprashanttripathi)
 * LinkedIn: [@ptprashanttripathi](https://linkedin.com/in/ptprashanttripathi)
