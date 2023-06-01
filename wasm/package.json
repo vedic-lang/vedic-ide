@@ -1,14 +1,14 @@
 {
-  "name": "vedic-wasm",
-  "collaborators": [
-    "Pt. Prashant Tripathi <ptprashanttripathi@outlook.com>"
-  ],
-  "version": "2.0.4",
-  "files": [
-    "vedic_wasm_bg.wasm",
-    "vedic_wasm.js",
-    "vedic_wasm.d.ts"
-  ],
-  "browser": "vedic_wasm.js",
-  "types": "vedic_wasm.d.ts"
+    "name": "vedic-wasm",
+    "collaborators": [
+        "Pt. Prashant Tripathi <ptprashanttripathi@outlook.com>"
+    ],
+    "version": "2.0.4",
+    "files": [
+        "vedic_wasm_bg.wasm",
+        "vedic_wasm.js",
+        "vedic_wasm.d.ts"
+    ],
+    "browser": "vedic_wasm.js",
+    "types": "vedic_wasm.d.ts"
 }
