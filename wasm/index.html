@@ -1,0 +1,88 @@
+<html lang="sa">
+
+<head>
+  <title>Vedic Online IDE</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- add icon link -->
+  <link rel="icon" href="https://avatars.githubusercontent.com/u/103427648?s=200&v=4" type="image/x-icon" />
+  <meta name="description"
+    content="https://vedic-lang.github.io/vedic-ide world first programming language in sanskrit" />
+  <meta name="keywords"
+    content="vedic-lang, vedic, programming language, sanskrit, ptprashanttripathi, Pt. Prashant Tripathi" />
+  <meta name="author" content="Pt. Prashant Tripathi" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Vedic Online IDE" />
+  <meta property="og:description"
+    content="https://vedic-lang.github.io/vedic-ide world first programming language in sanskrit" />
+  <meta property="og:url" content="https://vedic-lang.github.io/vedic-ide/" />
+  <meta property="og:site_name" content="Vedic Online IDE" />
+  <meta property="article:author" content="Pt. Prashant Tripathi" />
+  <meta property="article:tag"
+    content="vedic-lang, vedic, programming language, sanskrit, ptprashanttripathi, Pt. Prashant Tripathi" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/103427648?s=200&v=4" />
+  <meta name="twitter:card" content="" />
+  <meta name="twitter:description"
+    content="https://vedic-lang.github.io/vedic-ide world first programming language in sanskrit" />
+  <meta name="twitter:title" content="Vedic Online IDE" />
+  <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/103427648?s=200&v=4" />
+  <meta name="twitter:creator" content="Pt. Prashant Tripathi" />
+</head>
+
+<body>
+  <header>
+    <h3>
+      Vedic IDE
+      <sub> v1.2 </sub>
+    </h3>
+    <nav>
+      <ul>
+        <li><a href="https://vedic-lang.github.io/vedic-ide">Home</a></li>
+        <li><a href="https://vedic-lang.github.io">Docs</a></li>
+        <li><a href="https://github.com/vedic-lang/vedic">Github</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="editor-area">
+      <h3 style="color: grey; float: left">#EDITOR AREA</h3>
+      <span id="examples-wrapper">
+        <label for="btn-toggle" title="Click here to turn on/off the Transliteration">Transliteration:</label>
+        <input class="toggle" id="btn-toggle" type="checkbox" title="Click here to turn on/off the Transliteration" checked></input>
+        <label for="examples-select" title="Click here to load the sample code">Example:</label>
+        <select name="examples" id="examples-select" title="Click here to load the sample code"></select>
+      </span>
+      <div id="editor" class="code-area"></div>
+      <button id="btn-run" title="Click here to run the code">Run</button>
+      <button id="btn-clear" title="Click here to clear the console area">Clear</button>
+    </div>
+    <div class="console-area">
+      <h3 style="color: grey">#CONSOLE</h3>
+      <div id="output">
+        <ul id="console-logs"><li><pre class="log log--object">&gt; "output will come up here"</pre></li></ul>
+      </div>
+      <!--div class="hint-area">
+        <h3 style="color: grey">#KEYWORDS</h3>
+      </div-->
+    </div>
+  </div>
+  <!-- Required Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.min.js"
+    integrity="sha512-hDyKEpCc9jPn3u2VffFjScCtNqZI+BAbThAhhDYqqqZbxMqmTSNIgdU0OU9BRD/8wFxHIWLAo561hh9fW7j6sA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ext-language_tools.min.js"
+    integrity="sha512-S7Whi8oQAQu/MK6AhBWufIJIyOvqORj+/1YDM9MaHeRalsZjzyYS7Usk4fsh+6J77PUhuk5v/BxaMDXRdWd1KA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://unpkg.com/@sanskrit-coders/sanscript@1.1.8/sanscript.js"></script>
+
+  <!-- Custom Scripts -->
+  <script src='pkg/vedic_wasm.js'></script>
+  <script src="js/script.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/editor-console.js"></script>
+</body>
+
+</html>
