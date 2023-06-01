@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if [[ ${OS:-} = Windows_NT ]]; then
-    echo 'error: Please install bun using Windows Subsystem for Linux'
+    echo 'error: Please install vedic using Windows Subsystem for Linux'
     exit 1
 fi
 
@@ -49,94 +49,87 @@ success() {
     echo -e "${Green}$@ ${Color_Off}"
 }
 
-command -v unzip >/dev/null ||
-    error 'unzip is required to install bun (see: https://github.com/oven-sh/bun#unzip-is-required)'
+command -v tar >/dev/null ||
+    error 'tar is required to install vedic'
 
-if [[ $# -gt 2 ]]; then
-    error 'Too many arguments, only 2 are allowed. The first can be a specific tag of bun to install. (e.g. "bun-v0.1.4") The second can be a build variant of bun to install. (e.g. "debug-info")'
+command -V curl >/dev/null ||
+    error 'curl is required to install vedic'
+
+if [[ $# -gt 1 ]]; then
+    error 'Too many arguments, only one argument of specific tag of vedic to install. (e.g. "v2.0.4") is allowed'
 fi
 
 case $(uname -ms) in
-'Darwin x86_64')
-    target=darwin-x64
-    ;;
-'Darwin arm64')
-    target=darwin-aarch64
-    ;;
-'Linux aarch64' | 'Linux arm64')
-    target=linux-aarch64
-    ;;
-'Linux x86_64' | *)
-    target=linux-x64
-    ;;
+    'Darwin x86_64')
+        target=vedic-darwin-x86_64.tar.gz
+        ;;
+    'Darwin arm64')
+        target=vedic-darwin-aarch64.tar.gz
+        ;;
+    'Linux aarch64' | 'Linux arm64')
+        target=vedic-linux-gnu-aarch64.tar.xz
+        ;;
+    'Linux i686')
+        target=vedic-linux-gnu-i686.tar.xz
+        ;;
+    'Linux x86_64')
+        target=vedic-linux-gnu-x86_64.tar.xz
+        ;;
+    'Linux armv7')
+        target=vedic-linux-gnueabihf-armv7.tar.xz
+        ;;
+    'Linux x86_64 musl')
+        target=vedic-linux-musl-x86_64.tar.xz
+        ;;
+    *)
+        error 'Unsupported OS and architecture combination'
+        ;;
 esac
 
-if [[ $target = darwin-x64 ]]; then
+
+if [[ $target = vedic-darwin-x86_64.tar.gz ]]; then
     # Is this process running in Rosetta?
     # redirect stderr to devnull to avoid error message when not running in Rosetta
     if [[ $(sysctl -n sysctl.proc_translated 2>/dev/null) = 1 ]]; then
-        target=darwin-aarch64
-        info "Your shell is running in Rosetta 2. Downloading bun for $target instead"
+        target=vedic-darwin-aarch64.tar.gz
+        info "Your shell is running in Rosetta 2. Downloading vedic for $target instead"
     fi
 fi
 
 GITHUB=${GITHUB-"https://github.com"}
 
-github_repo="$GITHUB/oven-sh/bun"
+github_repo="$GITHUB/vedic-lang/vedic"
 
-if [[ $target = darwin-x64 ]]; then
-    # If AVX2 isn't supported, use the -baseline build
-    if [[ $(sysctl -a | grep machdep.cpu | grep AVX2) == '' ]]; then
-        target=darwin-x64-baseline
-    fi
-fi
-
-if [[ $target = linux-x64 ]]; then
-    # If AVX2 isn't supported, use the -baseline build
-    if [[ $(cat /proc/cpuinfo | grep avx2) = '' ]]; then
-        target=linux-x64-baseline
-    fi
-fi
-
-exe_name=bun
-
-if [[ $# = 2 && $2 = debug-info ]]; then
-    target=$target-profile
-    exe_name=bun-profile
-    info "You requested a debug build of bun. More infomation will be shown if a crash occurs."
-fi
+exe_name=vedic
 
 if [[ $# = 0 ]]; then
-    bun_uri=$github_repo/releases/latest/download/bun-$target.zip
+    vedic_uri=$github_repo/releases/latest/download/$target
 else
-    bun_uri=$github_repo/releases/download/$1/bun-$target.zip
+    vedic_uri=$github_repo/releases/download/$1/$target
 fi
 
-install_env=BUN_INSTALL
+install_env=VEDIC_INSTALL
 bin_env=\$$install_env/bin
 
-install_dir=${!install_env:-$HOME/.bun}
+install_dir=${!install_env:-$HOME/.vedic}
 bin_dir=$install_dir/bin
-exe=$bin_dir/bun
+exe=$bin_dir/vedic
 
 if [[ ! -d $bin_dir ]]; then
     mkdir -p "$bin_dir" ||
         error "Failed to create install directory \"$bin_dir\""
 fi
 
-curl --fail --location --progress-bar --output "$exe.zip" "$bun_uri" ||
-    error "Failed to download bun from \"$bun_uri\""
+curl --fail --location --progress-bar --output "$exe.tar.gz" "$vedic_uri" ||
+    error "Failed to download vedic from \"$vedic_uri\""
 
-unzip -oqd "$bin_dir" "$exe.zip" ||
-    error 'Failed to extract bun'
-
-mv "$bin_dir/bun-$target/$exe_name" "$exe" ||
-    error 'Failed to move extracted bun to destination'
+tar -xzf "$exe.tar.gz" -C "$bin_dir" ||
+    error 'Failed to extract vedic to destination'
 
 chmod +x "$exe" ||
-    error 'Failed to set permissions on bun executable'
+    error 'Failed to set permissions on vedic executable'
 
-rm -r "$bin_dir/bun-$target" "$exe.zip"
+rm -r "$exe.tar.gz"
 
 tildify() {
     if [[ $1 = $HOME/* ]]; then
@@ -148,13 +141,13 @@ tildify() {
     fi
 }
 
-success "bun was installed successfully to $Bold_Green$(tildify "$exe")"
+success "vedic was installed successfully to $Bold_Green$(tildify "$exe")"
 
-if command -v bun >/dev/null; then
+if command -v vedic >/dev/null; then
     # Install completions, but we don't care if it fails
-    IS_BUN_AUTO_UPDATE=true $exe completions &>/dev/null || :
+    IS_VEDIC_AUTO_UPDATE=true $exe completions &>/dev/null || :
 
-    echo "Run 'bun --help' to get started"
+    echo "Run 'vedic --help' to get started"
     exit
 fi
 
@@ -172,7 +165,7 @@ echo
 case $(basename "$SHELL") in
 fish)
     # Install completions, but we don't care if it fails
-    IS_BUN_AUTO_UPDATE=true SHELL=fish $exe completions &>/dev/null || :
+    IS_VEDIC_AUTO_UPDATE=true SHELL=fish $exe completions &>/dev/null || :
 
     commands=(
         "set --export $install_env $quoted_install_dir"
@@ -184,7 +177,7 @@ fish)
 
     if [[ -w $fish_config ]]; then
         {
-            echo -e '\n# bun'
+            echo -e '\n# vedic'
 
             for command in "${commands[@]}"; do
                 echo "$command"
@@ -204,7 +197,7 @@ fish)
     ;;
 zsh)
     # Install completions, but we don't care if it fails
-    IS_BUN_AUTO_UPDATE=true SHELL=zsh $exe completions &>/dev/null || :
+    IS_VEDIC_AUTO_UPDATE=true SHELL=zsh $exe completions &>/dev/null || :
 
     commands=(
         "export $install_env=$quoted_install_dir"
@@ -216,7 +209,7 @@ zsh)
 
     if [[ -w $zsh_config ]]; then
         {
-            echo -e '\n# bun'
+            echo -e '\n# vedic'
 
             for command in "${commands[@]}"; do
                 echo "$command"
@@ -260,7 +253,7 @@ bash)
 
         if [[ -w $bash_config ]]; then
             {
-                echo -e '\n# bun'
+                echo -e '\n# vedic'
 
                 for command in "${commands[@]}"; do
                     echo "$command"
@@ -298,4 +291,4 @@ if [[ $refresh_command ]]; then
     info_bold " $refresh_command"
 fi
 
-info_bold "  bun --help"
+info_bold "  vedic --help"
