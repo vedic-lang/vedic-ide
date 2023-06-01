@@ -9,105 +9,113 @@ const toggleBtn = document.getElementById("btn-toggle");
 let editor = ace.edit("editor");
 let session = editor.session;
 let defaultCode =
-  '# We have inbuilt transliteration tool\n# your input will be translitered to sanskrit once you press spacebar or enter key\n\nमान आयु = ३२;\nयदि (आयु == २५) {\n  वद "वयं सम वयस्काः एव"; # We\'re the same age\n}\nअथ यदि (आयु > २५) {\n  वद "वयं सम वयस्काः न एव"; # We\'re not the same age\n}\nअथ {\n  वद "मम अपेक्षया कनिष्ठः वा"; # Younger to me\n}';
+    '# We have inbuilt transliteration tool\n# your input will be translitered to sanskrit once you press spacebar or enter key\n\nमान आयु = ३२;\nयदि (आयु == २५) {\n  वद("वयं सम वयस्काः एव"); # We\'re the same age\n}\nअथ यदि (आयु > २५) {\n  वद("वयं सम वयस्काः न एव"); # We\'re not the same age\n}\nअथ {\n  वद("मम अपेक्षया कनिष्ठः वा"); # Younger to me\n}';
 let consoleMessages = [];
 
 let editorLib = {
-  clearConsoleScreen() {
-    consoleMessages.length = 0;
+    clearConsoleScreen() {
+        consoleMessages.length = 0;
 
-    // Remove all elements in the log list
-    while (consoleLogList.firstChild) {
-      consoleLogList.removeChild(consoleLogList.firstChild);
-    }
-  },
-  printToConsole() {
-    consoleMessages.forEach((log) => {
-      const newLogItem = document.createElement("li");
-      const newLogText = document.createElement("pre");
+        // Remove all elements in the log list
+        while (consoleLogList.firstChild) {
+            consoleLogList.removeChild(consoleLogList.firstChild);
+        }
+    },
+    printToConsole() {
+        consoleMessages.forEach((log) => {
+            const newLogItem = document.createElement("li");
+            const newLogText = document.createElement("pre");
 
-      newLogText.className = log.class;
-      newLogText.textContent = `> ${log.message}`;
+            newLogText.className = log.class;
+            newLogText.textContent = `> ${log.message}`;
 
-      newLogItem.appendChild(newLogText);
+            newLogItem.appendChild(newLogText);
 
-      consoleLogList.appendChild(newLogItem);
-    });
-  },
-  init() {
-    // Configure Ace Options
-    editor.setOptions({
-      wrap: true,
-      // wrap text to view
-      showPrintMargin: false,
-      indentedSoftWrap: false,
-      behavioursEnabled: false,
-      enableBasicAutocompletion: [
-        {
-          getCompletions: function (editor, session, pos, prefix, callback) {
-            var kwList = [
-              ["maana", "मान"],
-              ["vad", "वद"],
-              ["yadi", "यदि"],
-              ["atha", "अथ"],
-              ["satya", "सत्य"],
-              ["asatya", "असत्य"],
-              ["sUtra", "सूत्र"],
-              ["phala", "फल"],
-              ["chakram", "चक्रम्"],
-              ["paryantam", "पर्यन्तम्"],
-              ["virAm", "विराम्"],
-              ["nirdesha", "निर्देश"],
-              ["yada", "यद"],
-              ["yadabhAve", "यदभावे"],
-              ["avahan", "अवहन्"],
-            ];
-            callback(
-              null,
-              kwList.map(function (kw) {
-                return {
-                  value: kw[0],
-                  meta: kw[1],
-                }
-              }))
-          }
-        }],
-      // to make popup appear automatically, without explicit _ctrl+space_
-      enableLiveAutocompletion: true,
-      // disable autopairing of brackets and tags
-    });
+            consoleLogList.appendChild(newLogItem);
+        });
+    },
+    init() {
+        // Configure Ace Options
+        editor.setOptions({
+            wrap: true,
+            // wrap text to view
+            showPrintMargin: false,
+            indentedSoftWrap: false,
+            behavioursEnabled: false,
+            enableBasicAutocompletion: [
+                {
+                    getCompletions: function (
+                        editor,
+                        session,
+                        pos,
+                        prefix,
+                        callback
+                    ) {
+                        var kwList = [
+                            ["maana", "मान"],
+                            ["vad", "वद"],
+                            ["yadi", "यदि"],
+                            ["atha", "अथ"],
+                            ["satya", "सत्य"],
+                            ["asatya", "असत्य"],
+                            ["sUtra", "सूत्र"],
+                            ["phala", "फल"],
+                            ["chakram", "चक्रम्"],
+                            ["paryantam", "पर्यन्तम्"],
+                            ["virAm", "विराम्"],
+                            ["nirdesha", "निर्देश"],
+                            ["yada", "यद"],
+                            ["yadabhAve", "यदभावे"],
+                            ["avahan", "अवहन्"],
+                        ];
+                        callback(
+                            null,
+                            kwList.map(function (kw) {
+                                return {
+                                    value: kw[0],
+                                    meta: kw[1],
+                                };
+                            })
+                        );
+                    },
+                },
+            ],
+            // to make popup appear automatically, without explicit _ctrl+space_
+            enableLiveAutocompletion: true,
+            // disable autopairing of brackets and tags
+        });
 
-    // Set Default Code
-    editor.setValue(defaultCode);
-  },
-  add(text) {
-    session.insert(session.selection.getCursor(), " " + text + " ");
-    // Insert the text at the current cursor position
-  },
+        // Set Default Code
+        editor.setValue(defaultCode);
+    },
+    add(text) {
+        session.insert(session.selection.getCursor(), " " + text + " ");
+        // Insert the text at the current cursor position
+    },
 };
 
 // Events
 executeCodeBtn.addEventListener("click", () => {
-  // Get input from the code editor
-  const userCode = editor.getValue();
+    // Get input from the code editor
+    const userCode = editor.getValue();
 
-  // Clear the array first
-  consoleMessages = [];
+    // Clear the array first
+    consoleMessages = [];
 
-  // Run the user code
-  try {
-    vedic(userCode);
-  } catch (err) {
-    console.error(err);
-  }
+    // Run the user code
+    try {
+        vedic(userCode);
+    } catch (err) {
+        console.error(err);
+    }
 
-  // Print to the console
-  editorLib.printToConsole();
+    // Print to the console
+    editorLib.printToConsole();
 });
 
 resetCodeBtn.addEventListener("click", () => {
-  // Clear console messages
-  editorLib.clearConsoleScreen();
+    // Clear console messages
+    editorLib.clearConsoleScreen();
 });
 
 editorLib.init();
@@ -127,72 +135,76 @@ Keyword.forEach((keyword) => {
 
 // examples
 const examples = new Map([
-  ["hello-world.ved", `वद "हेलो विश्व!";`],
-  [
-    "operators.ved",
-    "वद २+१; # ३\nवद २-१; # १\nवद २*१; # २\nवद २/१; # २\nवद २%१; # ०\nवद २>१; # सत्य\nवद २<१; # असत्य\nवद २==१; # असत्य\nवद २!=१; # सत्य\nवद २>=१; # सत्य\nवद २>=१; # सत्य\nवद २<=१; # असत्य\nवद २&&१; # सत्य\nवद २||१; # सत्य",
-  ],
-  [
-    "suchi.ved",
-    '# Creating an सूचि\nमान क = [["आम",१ ],["संतरा",२],["सेब",३]];\nवद क;\n\n# Adding elements to a सूचि\nमान सप्तर्षि = []; # रिक्त सूचि - Empty list\n\nमान सप्तर्षि[]= "Kashyapa";\nमान सप्तर्षि[]= "Atri";\nमान सप्तर्षि[]= "Vasistha";\nमान सप्तर्षि[]= "Vishwamitra";\nमान सप्तर्षि[]= "Bharadvaja";\nमान सप्तर्षि[]= "Gautama";\nमान सप्तर्षि[]= "Jamadagni";\n\nवद सप्तर्षि;\nवद कुल(सप्तर्षि);',
-  ],
-  [
-    "sutra.ved",
-    "सूत्र योग(अ,ब){\n    फल अ+ब;\n}\n\nवद योग(११,२२); # it will print ३३ ",
-  ],
-  [
-    "viram.ved",
-    '# This will print only till ५, it will break after अ = ५\nचक्रम्(मान अ = ०; अ < १०; मान  अ = अ+ १)\n{\n  यदि (अ > ५){\n    विराम्;\n }\n  वद  "अ = " + अ;\n}',
-  ],
-  [
-    "yadiath.ved",
-    'मान आयु = ३२;\nयदि (आयु == २५) {\n  वद "वयं सम वयस्काः एव"; # We\'re the same age\n}\nअथ यदि (आयु > २५) {\n  वद "वयं सम वयस्काः न एव"; # We\'re not the same age\n}\nअथ {\n  वद "मम अपेक्षया कनिष्ठः वा"; # Younger to me\n}',
-  ],
-  [
-    "nirdesa.ved",
-    "मान अ = ३;\n\nनिर्देश (अ) {\n    यद १:\n        वद 'निर्देश १ अनुष्ठित'; # case 1 executed\n    यद २:\n        वद 'निर्देश २ अनुष्ठित'; \n    यद ३:\n        वद 'निर्देश ३ अनुष्ठित'; \n    यदभावे:\n        वद 'यदभावे औत्सर्गिक निर्देश अनुष्ठित'; # In the absence of incident default case executed\n}",
-  ],
-  [
-    "chakram.ved",
-    'चक्रम्(मान अ = ०; अ < १०; मान  अ = अ+ १)\n{\n  # चक्रम् takes in 3 parameters initial value, and condition, and a step size\n  वद  "अ = " + अ;\n} \n# This will print ० to ९',
-  ],
-  [
-    "simpleinterest",
-    'सूत्र मिश्रधन(म,द,स){\n    फल म+(म*द*स/१००);\n   }\nमान मूलधन = १०००;\nमान दर = ८;\nमान समय = ५; \n\nवद "मिश्रधन ="+मिश्रधन(मूलधन,दर,समय);',
-  ],
+    ["hello-world.ved", 'वद("हेलो विश्व!");'],
+    [
+        "operators.ved",
+        "वद(२+१); # expect: ३\nवद(२-१); # expect: १\nवद(२*१); # expect: २\nवद(२/१); # expect: २\nवद(२%१); # expect: ०\nवद(२>१); # expect: सत्य\nवद(२<१); # expect: असत्य\nवद(२==१); # expect: असत्य\nवद(२!=१); # expect: सत्य\nवद(२>=१); # expect: सत्य\nवद(२>=१); # expect: सत्य\nवद(२<=१); # expect: असत्य\nवद(२&&१); # expect: सत्य\nवद(२||१); # expect: सत्य",
+    ],
+    [
+        "suchi.ved",
+        '# Creating an सूचि \nमान क = [["आम",१ ],["संतरा",२],["सेब",३]];\nवद(क); # expect: [[आम, १], [संतरा, २], [सेब, ३]]\n\n# Adding elements to a सूचि\nमान सप्तर्षि = []; # रिक्त सूचि - Empty list\n\nसप्तर्षि.आगम("Kashyapa");\nसप्तर्षि.आगम("Atri");\nसप्तर्षि.आगम("Vasistha");\nसप्तर्षि.आगम("Vishwamitra");\nसप्तर्षि.आगम("Bharadvaja");\nसप्तर्षि.आगम("Gautama");\nसप्तर्षि.आगम("Jamadagni");\n\nवद(सप्तर्षि);\n# expect: [Kashyapa, Atri, Vasistha, Vishwamitra, Bharadvaja, Gautama, Jamadagni]\n\nवद("लंबाई =",कुल(सप्तर्षि)); # expect: लंबाई = ७',
+    ],
+    [
+        "sutra.ved",
+        "सूत्र योग(अ,ब){\n    फल अ+ब;\n}\n\nवद(योग(११,२२)); # it will print ३३ \n\n# expect: ३३",
+    ],
+    [
+        "yadiath.ved",
+        'मान आयु = ३२;\nयदि (आयु == २५) {\n  वद("वयं सम वयस्काः एव"); # We\'re the same age\n}\nअथ यदि (आयु > २५) {\n  वद("वयं सम वयस्काः न एव"); # We\'re not the same age\n}\nअथ {\n  वद("मम अपेक्षया कनिष्ठः वा"); # Younger to me\n}\n\n# expect: वयं सम वयस्काः न एव',
+    ],
+    [
+        "chakram.ved",
+        'चक्र(मान अ = ०; अ < १०; अ = अ+ १)\n{\n  # चक्रम् takes in 3 parameters initial value, and condition, and a step size\n  वद("अ =",अ);\n} \n\n# expect: अ = ०\n# expect: अ = १\n# expect: अ = २\n# expect: अ = ३\n# expect: अ = ४\n# expect: अ = ५\n# expect: अ = ६\n# expect: अ = ७\n# expect: अ = ८\n# expect: अ = ९\n',
+    ],
+    [
+        "viram.ved",
+        'चक्र(मान अ = ०; अ < १०; अ = अ+ १){\n    यदि (अ >= ५){\n        विराम;  # viram is like continue\n    }\n    वद("अ =>",अ);    \n} \n\n# expect: अ => ०\n# expect: अ => १\n# expect: अ => २\n# expect: अ => ३\n# expect: अ => ४',
+    ],
+    [
+        "agrim.ved",
+        'चक्र(मान अ = ०; अ < ५; अ = अ+ १){\n    यदि (अ == २){\n        अग्रिम; # Agrim is like skip\n    }\n    वद("अ =>",अ);\n} \n\n# expect: अ => ०\n# expect: अ => १\n# expect: अ => ३\n# expect: अ => ४',
+    ],
+    [
+        "paryantam.ved",
+        "# This will print ० to ५\nमान अ = ०;\nपर्यन्त( अ <= ५)\n{\n  वद(अ);\n  अ = अ+ १;\n} \n# expect: ०\n# expect: १\n# expect: २\n# expect: ३\n# expect: ४\n# expect: ५",
+    ],
+    [
+        "simpleinterest",
+        'सूत्र मिश्रधन(म,द,स){\n    फल म+(म*द*स/१००);\n}\n\nमान मूलधन = १०००;\nमान दर = ८;\nमान समय = ५; \n\nवद("मिश्रधन =",मिश्रधन(मूलधन,दर,समय));\n\n# expect: मिश्रधन = १४००',
+    ],
 ]);
 for (let name of examples.keys()) {
-  const elm = document.createElement("option");
-  if (name === "yadiath.ved") elm.selected = true;
-  elm.innerText = name;
-  examplesElm.appendChild(elm);
+    const elm = document.createElement("option");
+    if (name === "yadiath.ved") elm.selected = true;
+    elm.innerText = name;
+    examplesElm.appendChild(elm);
 }
 examplesElm.addEventListener("change", (evt) => {
-  if (evt.target.value) {
-    editor.setValue(examples.get(evt.target.value), -1);
-    editorLib.clearConsoleScreen();
-    executeCodeBtn.click();
-  }
+    if (evt.target.value) {
+        editor.setValue(examples.get(evt.target.value), -1);
+        editorLib.clearConsoleScreen();
+        executeCodeBtn.click();
+    }
 });
 editor.container.addEventListener("keydown", (key) => {
-  if (toggleBtn.checked) {
-    if (key.code == "Space" || key.code == "Enter") {
-      let pos = session.selection.getCursor();
-      let text = session.doc.$lines[pos.row]
-        .slice(0, pos.column)
-        .split(" ")
-        .pop();
-      let sanskrit = Sanscript.t(text, "itrans", "devanagari");
-      editor.session.replace(
-        {
-          start: {
-            row: pos.row,
-            column: pos.column - text.length,
-          },
-          end: pos,
-        },
-        sanskrit
-      );
+    if (toggleBtn.checked) {
+        if (key.code == "Space" || key.code == "Enter") {
+            let pos = session.selection.getCursor();
+            let text = session.doc.$lines[pos.row]
+                .slice(0, pos.column)
+                .split(" ")
+                .pop();
+            let sanskrit = Sanscript.t(text, "itrans", "devanagari");
+            editor.session.replace(
+                {
+                    start: {
+                        row: pos.row,
+                        column: pos.column - text.length,
+                    },
+                    end: pos,
+                },
+                sanskrit
+            );
+        }
     }
-  }
 });
