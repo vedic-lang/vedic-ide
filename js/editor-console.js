@@ -4,9 +4,6 @@ let console = {
 
     // Deal with different data types
     switch (this.getType(arg)) {
-      case "string":
-        outputArgMessage = `"${arg}"`;
-        break;
       case "object":
         outputArgMessage = `Object ${JSON.stringify(arg)}`;
         break;
@@ -50,12 +47,14 @@ let console = {
     });
   },
   log: function (text) {
+    window.console.log(text);
     let argsArray = Array.from(arguments);
     return argsArray.length !== 1
       ? this.logMultipleArguments(argsArray)
       : this.logSingleArgument(text);
   },
   error: function (err) {
+    window.console.error(err);
     consoleMessages.push({
       message: `${err.name}: ${err.message}`,
       class: "log log--error",

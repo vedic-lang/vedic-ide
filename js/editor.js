@@ -9,7 +9,7 @@ const toggleBtn = document.getElementById("btn-toggle");
 let editor = ace.edit("editor");
 let session = editor.session;
 let defaultCode =
-  '# We have inbuilt transliteration tool\n# your input will be translitered to sanskrit once you press spacebar or enter key\n\nमान आयु = ३२;\nयदि (आयु == २५) {\n  वद "वयं सम वयस्काः एव"; # We\'re the same age\n}\nअथ यदि (आयु > २५) {\n  वद "वयं सम वयस्काः न एव"; # We\'re not the same age\n}\nअथ {\n  वद "मम अपेक्षया कनिष्ठः वा"; # Younger to me\n}';
+  '# We have inbuilt transliteration tool\n# your input will be translitered to sanskrit once you press spacebar or enter key\n\nमान आयु = ३२;\nयदि (आयु == २५) {\n  वद("वयं सम वयस्काः एव"); # We\'re the same age\n}\nअथ यदि (आयु > २५) {\n  वद("वयं सम वयस्काः न एव"); # We\'re not the same age\n}\nअथ {\n  वद("मम अपेक्षया कनिष्ठः वा"); # Younger to me\n}';
 let consoleMessages = [];
 
 let editorLib = {
@@ -127,34 +127,38 @@ Keyword.forEach((keyword) => {
 
 // examples
 const examples = new Map([
-  ["hello-world.ved", `वद "हेलो विश्व!";`],
+  ["hello-world.ved", 'वद("हेलो विश्व!");'],
   [
     "operators.ved",
-    "वद २+१; # ३\nवद २-१; # १\nवद २*१; # २\nवद २/१; # २\nवद २%१; # ०\nवद २>१; # सत्य\nवद २<१; # असत्य\nवद २==१; # असत्य\nवद २!=१; # सत्य\nवद २>=१; # सत्य\nवद २>=१; # सत्य\nवद २<=१; # असत्य\nवद २&&१; # सत्य\nवद २||१; # सत्य",
+    "वद(२+१); // expect: ३\nवद(२-१); // expect: १\nवद(२*१); // expect: २\nवद(२/१); // expect: २\nवद(२%१); // expect: ०\nवद(२>१); // expect: सत्य\nवद(२<१); // expect: असत्य\nवद(२==१); // expect: असत्य\nवद(२!=१); // expect: सत्य\nवद(२>=१); // expect: सत्य\nवद(२>=१); // expect: सत्य\nवद(२<=१); // expect: असत्य\nवद(२&&१); // expect: सत्य\nवद(२||१); // expect: सत्य",
   ],
   [
     "suchi.ved",
-    '# Creating an सूचि\nमान क = [["आम",१ ],["संतरा",२],["सेब",३]];\nवद क;\n\n# Adding elements to a सूचि\nमान सप्तर्षि = []; # रिक्त सूचि - Empty list\n\nमान सप्तर्षि[]= "Kashyapa";\nमान सप्तर्षि[]= "Atri";\nमान सप्तर्षि[]= "Vasistha";\nमान सप्तर्षि[]= "Vishwamitra";\nमान सप्तर्षि[]= "Bharadvaja";\nमान सप्तर्षि[]= "Gautama";\nमान सप्तर्षि[]= "Jamadagni";\n\nवद सप्तर्षि;\nवद कुल(सप्तर्षि);',
+    "//TBD",
   ],
   [
-    "sutra.ved",
-    "सूत्र योग(अ,ब){\n    फल अ+ब;\n}\n\nवद योग(११,२२); # it will print ३३ ",
+  "sutra.ved",
+  "सूत्र योग(अ,ब){\n    फल अ+ब;\n}\n\nवद(योग(११,२२)); // it will print ३३ \n\n// expect: ३३",
   ],
   [
     "viram.ved",
-    '# This will print only till ५, it will break after अ = ५\nचक्रम्(मान अ = ०; अ < १०; मान  अ = अ+ १)\n{\n  यदि (अ > ५){\n    विराम्;\n }\n  वद  "अ = " + अ;\n}',
+    "//TBD",
   ],
   [
-    "yadiath.ved",
-    'मान आयु = ३२;\nयदि (आयु == २५) {\n  वद "वयं सम वयस्काः एव"; # We\'re the same age\n}\nअथ यदि (आयु > २५) {\n  वद "वयं सम वयस्काः न एव"; # We\'re not the same age\n}\nअथ {\n  वद "मम अपेक्षया कनिष्ठः वा"; # Younger to me\n}',
+  "yadiath.ved",
+  'मान आयु = ३२;\nयदि (आयु == २५) {\n  वद("वयं सम वयस्काः एव"); // We\'re the same age\n}\nअथ यदि (आयु > २५) {\n  वद("वयं सम वयस्काः न एव"); // We\'re not the same age\n}\nअथ {\n  वद("मम अपेक्षया कनिष्ठः वा"); // Younger to me\n}\n\n// expect: वयं सम वयस्काः न एव',
   ],
   [
     "nirdesa.ved",
-    "मान अ = ३;\n\nनिर्देश (अ) {\n    यद १:\n        वद 'निर्देश १ अनुष्ठित'; # case 1 executed\n    यद २:\n        वद 'निर्देश २ अनुष्ठित'; \n    यद ३:\n        वद 'निर्देश ३ अनुष्ठित'; \n    यदभावे:\n        वद 'यदभावे औत्सर्गिक निर्देश अनुष्ठित'; # In the absence of incident default case executed\n}",
+    "//TBD",
+  ],
+  [
+    "paryantam.ved",
+    "// This will print ० to ५\nमान अ = ०;\nपर्यन्त( अ <= ५)\n{\n  वद(अ);\n  अ = अ+ १;\n} \n// expect: ०\n// expect: १\n// expect: २\n// expect: ३\n// expect: ४\n// expect: ५",
   ],
   [
     "chakram.ved",
-    'चक्रम्(मान अ = ०; अ < १०; मान  अ = अ+ १)\n{\n  # चक्रम् takes in 3 parameters initial value, and condition, and a step size\n  वद  "अ = " + अ;\n} \n# This will print ० to ९',
+    'चक्र(मान अ = ०; अ < १०; अ = अ+ १)\n{\n  // चक्रम् takes in 3 parameters initial value, and condition, and a step size\n  वद("अ =",अ);\n} \n\n// expect: अ = ०\n// expect: अ = १\n// expect: अ = २\n// expect: अ = ३\n// expect: अ = ४\n// expect: अ = ५\n// expect: अ = ६\n// expect: अ = ७\n// expect: अ = ८\n// expect: अ = ९\n',
   ],
   [
     "simpleinterest",
