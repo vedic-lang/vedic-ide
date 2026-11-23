@@ -11,7 +11,7 @@
   </a>
 </p>
 
-> Vedic IDE for world first programing langage in sankrit
+> A browser IDE for writing and running Vedic programs with Sanskrit keywords and Devanagari syntax.
 
 ### 🏠 [Homepage](https://vedic-lang.github.io/vedic-ide)
 
