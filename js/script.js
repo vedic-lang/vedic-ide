@@ -1,10 +1,10 @@
 const { vedic } = wasm_bindgen;
-const executeCodeBtn = document.getElementById("btn-run");
+const runButton = document.getElementById("btn-run");
 
-executeCodeBtn.disabled = true;
+runButton.disabled = true;
 window.vedicReady = wasm_bindgen().then(
     () => null,
     (error) => error
 ).finally(() => {
-    executeCodeBtn.disabled = false;
+    runButton.disabled = false;
 });
