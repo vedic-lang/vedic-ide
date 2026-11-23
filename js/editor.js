@@ -95,7 +95,7 @@ let editorLib = {
 };
 
 // Events
-executeCodeBtn.addEventListener("click", () => {
+executeCodeBtn.addEventListener("click", async () => {
     // Get input from the code editor
     const userCode = editor.getValue();
 
@@ -104,6 +104,13 @@ executeCodeBtn.addEventListener("click", () => {
 
     // Run the user code
     try {
+        const wasmError = await window.vedicReady;
+        if (wasmError) {
+            const message = window.location.protocol === "file:"
+                ? "The IDE cannot load WebAssembly from a file URL. In this folder, run `python -m http.server 8000`, then open http://localhost:8000."
+                : `Unable to load the Vedic WebAssembly module: ${wasmError.message || wasmError}`;
+            throw new Error(message);
+        }
         vedic(userCode);
     } catch (err) {
         console.error(err);

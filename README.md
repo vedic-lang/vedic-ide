@@ -17,6 +17,16 @@
 
 ### ✨ [Demo](https://vedic-lang.github.io/vedic-ide)
 
+### Run locally
+
+From this repository's directory, start a local web server:
+
+```bash
+python -m http.server 8000
+```
+
+Then open [http://localhost:8000](http://localhost:8000). The browser IDE needs HTTP to load its WebAssembly file; opening `index.html` directly does not work.
+
 ## Author
 
 👤 **Pt. Prashant Tripathi**
