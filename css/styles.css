@@ -1,217 +1,395 @@
-/* @import url(https://fonts.googleapis.com/css?family=Ubuntu); */
-@import url(https://fonts.googleapis.com/css?family=Ek+Mukta);
+:root {
+    color-scheme: light;
+    --ink: #18252e;
+    --muted: #63717c;
+    --line: #dce4e8;
+    --surface: #ffffff;
+    --canvas: #f3f6f5;
+    --accent: #14665c;
+    --accent-hover: #0e5149;
+    --soft-accent: #e8f3f0;
+}
+
+* {
+    box-sizing: border-box;
+}
 
 body {
-    background: linear-gradient(9deg, #fefffc 0, #f9f9f9 100%) fixed;
-    font-family: "EK Mukta", Ubuntu, Raleway, HelveticaNeue, "Helvetica Neue",
-        Helvetica, Arial, sans-serif;
+    min-width: 320px;
+    min-height: 100vh;
     margin: 0;
-    padding: 0;
-    font-size: 62.5%;
+    color: var(--ink);
+    background: var(--canvas);
+    font-family: "Ek Mukta", "Kohinoor Devanagari", "Nirmala UI", system-ui,
+        -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
-header {
-    padding: 0.5em 1em;
+.site-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+    width: min(1440px, calc(100% - 48px));
+    min-height: 78px;
+    margin: 0 auto;
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    gap: 24px;
 }
 
-header h3 {
-    color: #424242;
-    font-size: 2.5em;
-    margin: 0.6em;
-    display: inline-block;
+.brand {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0;
+    color: var(--ink);
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.035em;
 }
 
-nav li,
+.brand span {
+    color: var(--accent);
+}
+
+.brand sub {
+    position: relative;
+    top: -0.05em;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
 nav ul {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     margin: 0;
     padding: 0;
+    list-style: none;
 }
 
-nav li {
-    font-size: 1.7em;
-    display: inline-block;
-    margin: 1em 0.5em;
-}
-
-nav li a {
-    color: #4b4f58;
+nav a {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    padding: 0 13px;
+    border-radius: 8px;
+    color: #44545d;
+    font-size: 0.92rem;
+    font-weight: 600;
     text-decoration: none;
+    transition: background-color 160ms ease, color 160ms ease;
+}
+
+nav a:hover {
+    color: var(--accent);
+    background: var(--soft-accent);
+}
+
+.container {
+    width: min(1440px, calc(100% - 48px));
+    margin: 28px auto 40px;
+}
+
+.workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.85fr);
+    align-items: stretch;
+    gap: 20px;
+}
+
+.editor-area,
+.console-area {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface);
+    box-shadow: 0 8px 26px rgb(27 47 55 / 5%);
+}
+
+.editor-area {
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-header {
+    min-height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--line);
+}
+
+.panel-title {
+    flex: 0 0 auto;
+    margin: 0;
+    color: #34464f;
+    font-size: 0.78rem;
+    font-weight: 750;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+#examples-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px 10px;
+}
+
+#examples-wrapper label {
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+#examples-wrapper select {
+    max-width: 190px;
+    min-height: 36px;
+    padding: 0 30px 0 10px;
+    border: 1px solid #cbd6da;
+    border-radius: 7px;
+    color: var(--ink);
+    background: #fff;
+    font: inherit;
+    font-size: 0.84rem;
+}
+
+#btn-toggle {
+    width: 17px;
+    height: 17px;
+    margin: 0;
+    accent-color: var(--accent);
     cursor: pointer;
 }
 
 .code-area {
-    position: relative;
-    height: 50%;
     width: 100%;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    border: 1px solid #e0e0e0;
-}
-
-.container {
-    position: relative;
-    margin: 0 auto;
-    padding: 0 20px;
-    box-sizing: border-box;
-    max-width: 100%;
-    width: 100%;
-    margin-bottom: 50px;
-}
-
-.console-area,
-.editor-area {
-    width: 100%;
-    float: left;
-    box-sizing: border-box;
-    padding: 0.4em;
+    height: min(68vh, 760px);
+    min-height: 460px;
+    border: 0;
 }
 
 .ace_editor,
 .ace_editor * {
-    font-family: "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas",
-        monospace !important;
-    font-size: 13pt !important;
-    line-height: 1.5em;
-    /* letter-spacing: 0 !important; */
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
 }
 
-.container:after {
-    content: "";
-    display: table;
-    clear: both;
+.ace_gutter {
+    background: #f7f9f8 !important;
+    color: #77868e !important;
+    border-right: 1px solid #e6ebed;
 }
 
-#output {
-    background: #f5f2f0;
-    box-sizing: border-box;
-    border: 1px solid #e0e0e0;
-    height: 50%;
-    padding: 0em;
-    overflow: auto;
+.ace_gutter-cell {
+    padding: 0 12px !important;
 }
 
-sub {
-    font-size: 12px;
-    position: relative;
+.action-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 13px 18px;
+    border-top: 1px solid var(--line);
+    background: #fbfcfc;
 }
 
 .editor-area button {
-    margin: 0.4em;
-    padding: 0 30px;
-    color: #555;
-    text-align: center;
-    font-size: 1.2em;
-    font-weight: 600;
-    line-height: 1.5rem;
-    letter-spacing: 0.1rem;
-    text-transform: uppercase;
-    background-color: transparent;
-    border-radius: 4px;
-    border: 1px solid #bbb;
+    min-height: 40px;
+    margin: 0;
+    padding: 0 17px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 700;
     cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease,
+        transform 160ms ease;
 }
 
-.hint-area button {
-    margin: 0.1em;
-    color: #555;
-    text-align: center;
-    font-size: 1.6em;
-    line-height: 1.5rem;
-    letter-spacing: 0.04rem;
-    background-color: transparent;
-    border-radius: 4px;
-    border: 1px solid #bbb;
-    cursor: pointer;
+.editor-area button:active:not(:disabled) {
+    transform: translateY(1px);
 }
 
-button {
-    transition: all 0.2s ease-in-out;
+#btn-run {
+    color: #fff;
+    background: var(--accent);
 }
 
-#examples-wrapper {
-    display: inline-block;
-    float: right;
-    vertical-align: middle;
-    line-height: 38px;
-    padding: 0 12px;
+#btn-run:hover:not(:disabled) {
+    background: var(--accent-hover);
 }
 
-#examples-wrapper label {
-    font-size: 13px;
-    padding-right: 5px;
+#btn-clear {
+    color: #43545c;
+    border-color: #cbd6da;
+    background: #fff;
 }
 
-/* Editor Console Logs */
+#btn-clear:hover {
+    border-color: #9eafb5;
+    background: #f4f7f6;
+}
+
+.editor-area button:disabled {
+    cursor: wait;
+    opacity: 0.6;
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+nav a:focus-visible {
+    outline: 3px solid rgb(20 102 92 / 28%);
+    outline-offset: 2px;
+}
+
+.console-area {
+    display: flex;
+    flex-direction: column;
+}
+
+.console-area > .panel-title {
+    min-height: 68px;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    border-bottom: 1px solid var(--line);
+}
+
+#output {
+    min-height: 460px;
+    height: min(68vh, 760px);
+    overflow: auto;
+    padding: 0;
+    background: #fbfcfc;
+}
+
 #console-logs {
-    padding: 0 0.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 18px;
     list-style: none;
 }
 
 #console-logs li pre {
-    font-size: 1.5em;
+    margin: 0;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: 0.86rem;
+    line-height: 1.55;
 }
 
 .log--default,
 .log--boolean {
-    color: #000;
+    color: #26363e;
 }
 
 .log--number,
-.log--string {
-    color: darkcyan; /* blue; */
+.log--string,
+.log--object {
+    color: #08796e;
 }
 
 .log--undefined {
-    color: grey;
+    color: #77868e;
 }
 
 .log--error {
-    color: red;
-}
-
-.log--object {
-    color: darkcyan;
+    color: #b42318;
 }
 
 .log--array {
-    color: darkblue;
+    color: #2c5f9e;
 }
 
 .log--function {
-    color: yellow;
+    color: #856404;
 }
 
-@media (min-width: 500px) {
+@media (max-width: 900px) {
+    .workspace {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .code-area,
+    #output {
+        height: 54vh;
+        min-height: 340px;
+        max-height: 620px;
+    }
+}
+
+@media (max-width: 580px) {
+    .header-inner,
     .container {
-        width: 95%;
+        width: calc(100% - 28px);
     }
 
-    header {
-        padding: 0.5em 6em;
+    .header-inner {
+        min-height: 0;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+        padding: 14px 0;
     }
 
-    #output,
-    .code-area {
-        height: 70%;
+    nav ul {
+        flex-wrap: wrap;
+        gap: 2px;
     }
 
-    .console-area {
-        width: 40%;
+    nav a {
+        min-height: 34px;
+        padding: 0 10px;
     }
 
-    .editor-area {
-        width: 55%;
+    .container {
+        margin-top: 16px;
     }
-}
 
-.ace_gutter>.ace_layer {
-    width: 30px !important;
-}
+    .workspace {
+        gap: 14px;
+    }
 
-.ace_gutter-cell {
-    padding-left: 0 !important;
+    .panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px;
+    }
+
+    #examples-wrapper {
+        justify-content: flex-start;
+    }
+
+    #examples-wrapper select {
+        max-width: 150px;
+    }
+
+    .code-area,
+    #output {
+        height: 52vh;
+        min-height: 300px;
+    }
+
+    .action-bar {
+        padding: 12px 14px;
+    }
 }

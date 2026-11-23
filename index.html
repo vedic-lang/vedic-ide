@@ -1,3 +1,4 @@
+<!doctype html>
 <html lang="sa">
 
 <head>
@@ -32,43 +33,48 @@
 </head>
 
 <body>
-  <header>
-    <h3>
-      Vedic IDE
-      <sub> v2.0 </sub>
-    </h3>
-    <nav>
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="brand">Vedic <span>IDE</span><sub>v2.0</sub></h1>
+      <nav aria-label="Main navigation">
       <ul>
         <li><a href="https://vedic-lang.github.io/vedic-ide">Home</a></li>
         <li><a href="https://vedic-lang.github.io">Docs</a></li>
         <li><a href="https://github.com/vedic-lang/vedic">Github</a></li>
       </ul>
-    </nav>
+      </nav>
+    </div>
   </header>
 
-  <div class="container">
-    <div class="editor-area">
-      <h3 style="color: grey; float: left">#EDITOR AREA</h3>
-      <span id="examples-wrapper">
-        <label for="btn-toggle" title="Click here to turn on/off the Transliteration">Transliteration:</label>
-        <input class="toggle" id="btn-toggle" type="checkbox" title="Click here to turn on/off the Transliteration" checked></input>
-        <label for="examples-select" title="Click here to load the sample code">Example:</label>
-        <select name="examples" id="examples-select" title="Click here to load the sample code"></select>
-      </span>
-      <div id="editor" class="code-area"></div>
-      <button id="btn-run" title="Click here to run the code">Run</button>
-      <button id="btn-clear" title="Click here to clear the console area">Clear</button>
-    </div>
-    <div class="console-area">
-      <h3 style="color: grey">#CONSOLE</h3>
+  <main class="container">
+    <div class="workspace">
+      <section class="editor-area" aria-labelledby="editor-title">
+        <div class="panel-header">
+          <h2 class="panel-title" id="editor-title">Editor</h2>
+          <div id="examples-wrapper">
+            <label for="btn-toggle" title="Turn transliteration on or off">Transliteration</label>
+            <input class="toggle" id="btn-toggle" type="checkbox" title="Turn transliteration on or off" checked />
+            <label for="examples-select" title="Load a sample program">Example</label>
+            <select name="examples" id="examples-select" title="Load a sample program"></select>
+          </div>
+        </div>
+        <div id="editor" class="code-area" aria-label="Vedic code editor"></div>
+        <div class="action-bar">
+          <button id="btn-run" type="button" title="Run the code">Run</button>
+          <button id="btn-clear" type="button" title="Clear the console output">Clear output</button>
+        </div>
+      </section>
+      <section class="console-area" aria-labelledby="console-title">
+        <h2 class="panel-title" id="console-title">Console</h2>
       <div id="output">
-        <ul id="console-logs"><li><pre class="log log--object">&gt; "output will come up here"</pre></li></ul>
+        <ul id="console-logs"><li><pre class="log log--object">Run a program to see its output.</pre></li></ul>
       </div>
       <!--div class="hint-area">
         <h3 style="color: grey">#KEYWORDS</h3>
       </div-->
+      </section>
     </div>
-  </div>
+  </main>
   <!-- Required Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.min.js"
     integrity="sha512-hDyKEpCc9jPn3u2VffFjScCtNqZI+BAbThAhhDYqqqZbxMqmTSNIgdU0OU9BRD/8wFxHIWLAo561hh9fW7j6sA=="

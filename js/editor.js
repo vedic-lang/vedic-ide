@@ -86,7 +86,8 @@ let editorLib = {
         });
 
         // Set Default Code
-        editor.setValue(defaultCode);
+        editor.setValue(defaultCode, -1);
+        editor.clearSelection();
     },
     add(text) {
         session.insert(session.selection.getCursor(), " " + text + " ");
@@ -99,8 +100,8 @@ executeCodeBtn.addEventListener("click", async () => {
     // Get input from the code editor
     const userCode = editor.getValue();
 
-    // Clear the array first
-    consoleMessages = [];
+    // Start with a clean output panel.
+    editorLib.clearConsoleScreen();
 
     // Run the user code
     try {
@@ -189,6 +190,7 @@ for (let name of examples.keys()) {
 examplesElm.addEventListener("change", (evt) => {
     if (evt.target.value) {
         editor.setValue(examples.get(evt.target.value), -1);
+        editor.clearSelection();
         editorLib.clearConsoleScreen();
         executeCodeBtn.click();
     }
