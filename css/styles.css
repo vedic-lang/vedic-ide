@@ -52,6 +52,10 @@ body {
     letter-spacing: -0.035em;
 }
 
+.brand img {
+    align-self: center;
+}
+
 .brand span {
     color: var(--accent);
 }
