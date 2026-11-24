@@ -17,6 +17,8 @@
 
 ### ✨ [Demo](https://vedic-lang.github.io/vedic-ide)
 
+The IDE opens with Hello World. Press **Run** to see `नमस्ते विश्व!` in the console. To share a built-in program, choose it in **Example** and copy the address bar. The link opens the original example, including for someone visiting the IDE for the first time. [Open the functions example](https://vedic-lang.github.io/vedic-ide/?example=sutra.ved)
+
 ### Run locally
 
 From this repository's directory, start a local web server:
@@ -26,6 +28,16 @@ python -m http.server 8000
 ```
 
 Then open [http://localhost:8000](http://localhost:8000). The browser IDE needs HTTP to load its WebAssembly file; opening `index.html` directly does not work.
+
+### Test the first run
+
+Run these commands from the repository root with a Python virtual environment active. The smoke test starts its own local server and runs the bundled WebAssembly interpreter in Chromium.
+
+```bash
+python -m pip install -r tests/requirements.txt
+python -m playwright install --only-shell chromium
+python tests/browser_smoke.py
+```
 
 ## Author
 
