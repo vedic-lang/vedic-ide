@@ -53,11 +53,12 @@ let console = {
             ? this.logMultipleArguments(argsArray)
             : this.logSingleArgument(text);
     },
-    error: function (err) {
-        window.console.error(err);
+    error: function (err, insertion) {
+        window.console.error(...arguments);
         consoleMessages.push({
             message: err instanceof Error ? err.toString() : String(err),
             class: "log log--error",
+            insertion: typeof insertion?.hint === "string" ? insertion : undefined,
         });
     },
 };

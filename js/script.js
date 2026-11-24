@@ -1,4 +1,3 @@
-const { vedic } = wasm_bindgen;
 const runButton = document.getElementById("btn-run");
 
 runButton.disabled = true;

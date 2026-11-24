@@ -170,6 +170,8 @@ svg.chevron { width: 14px; height: 14px; }
 #console-logs { margin: 0; padding: 15px 18px; list-style: none; }
 .log { margin: 0; font: 14px/1.65 var(--code-font); white-space: pre-wrap; overflow-wrap: anywhere; }
 .log--error { color: var(--danger); }
+.log--insertion { white-space: pre; overflow-x: auto; }
+.diagnostic-prefix { visibility: hidden; }
 .reference { padding: 16px 20px; }
 .reference h3 { margin: 0; font-size: 15px; }
 .reference dl { margin: 16px 0; }
