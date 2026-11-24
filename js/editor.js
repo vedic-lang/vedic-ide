@@ -34,7 +34,9 @@ let editorLib = {
         });
     },
     init() {
-        // Configure Ace Options
+        session.setMode("ace/mode/vedic");
+        editor.renderer.setPadding(12);
+        editor.renderer.setScrollMargin(12, 12);
         editor.setOptions({
             wrap: true,
             // wrap text to view
@@ -84,22 +86,26 @@ let editorLib = {
             // disable autopairing of brackets and tags
         });
     },
-    add(text) {
-        session.insert(session.selection.getCursor(), " " + text + " ");
-        // Insert the text at the current cursor position
-    },
 };
 
-// Events
+function resetOutput() {
+    showRuntimeStatus();
+    editorLib.clearConsoleScreen();
+    emptyConsole.hidden = false;
+    emptyConsole.querySelector("strong").textContent = "Console ready";
+    emptyConsole.querySelector("span").textContent = "Run a program to see its output.";
+}
+
 async function runCode() {
     const run = ++latestRun;
-    // Get input from the code editor
     const userCode = editor.getValue();
-
-    // Start with a clean output panel.
+    const file = filename.textContent;
+    const started = performance.now();
     editorLib.clearConsoleScreen();
+    emptyConsole.hidden = true;
+    selectPanel(outputTab);
+    setStatus("Running", "running");
 
-    // Run the user code
     try {
         const wasmError = await window.vedicReady;
         if (run !== latestRun) return;
@@ -114,31 +120,21 @@ async function runCode() {
         console.error(err);
     }
 
-    // Print to the console
     editorLib.printToConsole();
+    if (!consoleMessages.length) {
+        emptyConsole.hidden = false;
+        emptyConsole.querySelector("strong").textContent = "Program finished";
+        emptyConsole.querySelector("span").textContent = "This program produced no output.";
+    }
+    recordRun(file, performance.now() - started, consoleMessages.some(log => log.class === "log log--error"));
 }
 
 executeCodeBtn.addEventListener("click", runCode);
-
 resetCodeBtn.addEventListener("click", () => {
     latestRun++;
-    editorLib.clearConsoleScreen();
+    resetOutput();
 });
-
 editorLib.init();
-
-/*/add keyword button dnymically
-let Keyword = ["मान", "वद", "यदि", "अथ", "सत्य", "असत्य", "सूत्र", "फल", "चक्रम्", "पर्यन्तम्", "विराम्", "निर्देश", "यद", "यदभावे", "अवहन्"];
-let KeywordArea = document.getElementsByClassName("hint-area")[0];
-Keyword.forEach((keyword) => {
-  let newBtn = document.createElement("button");
-  newBtn.textContent = keyword;
-  newBtn.addEventListener("click", () => {
-    editorLib.add(keyword);
-  });
-  KeywordArea.appendChild(newBtn);
-});
-*/
 
 // examples
 const examples = new Map([
@@ -185,7 +181,9 @@ for (const name of examples.keys()) {
 }
 
 function loadExample(name) {
+    latestRun++;
     examplesElm.value = name;
+    document.getElementById("filename").textContent = name.endsWith(".ved") ? name : name + ".ved";
     editor.setValue(examples.get(name), -1);
     editor.clearSelection();
 }
@@ -193,14 +191,19 @@ function loadExample(name) {
 const requestedExample = new URLSearchParams(window.location.search).get("example");
 loadExample(examples.has(requestedExample) ? requestedExample : "hello-world.ved");
 
+function updateExampleURL(name) {
+    if (location.protocol === "http:" || location.protocol === "https:") {
+        const url = new URL(window.location.href);
+        if (name) url.searchParams.set("example", name);
+        else url.searchParams.delete("example");
+        history.replaceState(history.state, "", url);
+    }
+}
+
 examplesElm.addEventListener("change", () => {
     const name = examplesElm.value;
     loadExample(name);
-    if (location.protocol === "http:" || location.protocol === "https:") {
-        const url = new URL(window.location.href);
-        url.searchParams.set("example", name);
-        history.replaceState(history.state, "", url);
-    }
+    updateExampleURL(name);
     runCode();
 });
 editor.container.addEventListener("keydown", (key) => {

@@ -19,6 +19,8 @@
 
 The IDE opens with Hello World. Press **Run** to see `नमस्ते विश्व!` in the console. To share a built-in program, choose it in **Example** and copy the address bar. The link opens the original example, including for someone visiting the IDE for the first time. [Open the functions example](https://vedic-lang.github.io/vedic-ide/?example=sutra.ved)
 
+The editor and console sit side by side on desktop and stack on phones. Use **Ctrl+Enter** (or **⌘+Enter** on macOS) to run the current file. **Open local file** and **Download** work with UTF-8 source on your device. **Reference** lists common Vedic expressions, and **Run history** shows the last 20 runs in this session.
+
 ### Run locally
 
 From this repository's directory, start a local web server:

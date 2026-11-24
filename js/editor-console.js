@@ -56,7 +56,7 @@ let console = {
     error: function (err) {
         window.console.error(err);
         consoleMessages.push({
-            message: `${err.name}: ${err.message}`,
+            message: err instanceof Error ? err.toString() : String(err),
             class: "log log--error",
         });
     },

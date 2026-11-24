@@ -24,7 +24,8 @@ def check_examples(base_url):
 
         page.goto(base_url + "?lesson=first&example=yadiath.ved#editor")
         expect(examples).to_have_value("yadiath.ved")
-        expect(output).to_have_text(["Run a program to see its output."])
+        expect(page.get_by_text("Run a program to see its output.")).to_be_visible()
+        expect(output).to_have_count(0)
         run.click()
         expect(output).to_have_text(["> वयं सम वयस्काः न एव"])
 
@@ -34,8 +35,49 @@ def check_examples(base_url):
         assert parse_qs(link.query) == {"lesson": ["first"], "example": ["sutra.ved"]}
         assert link.fragment == "editor"
 
-        page.set_viewport_size({"width": 375, "height": 812})
+        expect(page.locator("#filename")).to_have_text("sutra.ved")
+        page.get_by_role("button", name="Find in file").click()
+        expect(page.locator(".ace_search_field").first).to_be_visible()
+        page.keyboard.press("Escape")
+        page.get_by_role("tab", name="Reference").click()
+        expect(page.get_by_role("heading", name="Quick reference")).to_be_visible()
+        page.keyboard.press("ArrowLeft")
+        expect(page.get_by_role("tab", name="Console")).to_be_focused()
+        page.locator(".history summary").click()
+        expect(page.locator("#runs li")).to_have_count(2)
+        expect(page.locator("#runs li").first).to_contain_text("sutra.ved · Finished")
+        page.locator(".history summary").click()
+
+        source = 'वद("परीक्षा");'
+        page.locator("#file-picker").set_input_files({
+            "name": "test.ved", "mimeType": "text/plain", "buffer": source.encode()
+        })
+        expect(page.locator("#filename")).to_have_text("test.ved")
+        assert "example" not in parse_qs(urlsplit(page.url).query)
+        page.keyboard.press("Control+Enter")
+        expect(output).to_have_text(["> परीक्षा"])
+        with page.expect_download() as download:
+            page.get_by_role("button", name="Download file").click()
+        assert download.value.suggested_filename == "test.ved"
+        assert download.value.path().read_text() == source
+
+        page.locator("#file-picker").set_input_files({
+            "name": "error.ved", "mimeType": "text/plain", "buffer": 'मान अ = ;'.encode()
+        })
+        expect(page.locator("#filename")).to_have_text("error.ved")
+        run.click()
+        expect(page.locator("#runtime-status")).to_have_text("Failed")
+        expect(page.locator(".log--error").first).not_to_contain_text("undefined: undefined")
+
+        page.get_by_role("button", name="Dark theme").click()
+        page.goto(base_url + "?example=sutra.ved")
+        expect(page.get_by_role("button", name="Dark theme")).to_have_attribute("aria-pressed", "true")
+        page.set_viewport_size({"width": 320, "height": 740})
         page.reload()
+        editor_box = page.locator("#editor").bounding_box()
+        output_box = page.locator("#output").bounding_box()
+        assert editor_box["y"] + editor_box["height"] <= output_box["y"]
+        assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
         expect(examples).to_have_value("sutra.ved")
         run.click()
         expect(output).to_have_text(["> ३३"])
