@@ -5,9 +5,7 @@ const resetCodeBtn = document.getElementById("btn-clear");
 const examplesElm = document.getElementById("examples-select");
 const toggleBtn = document.getElementById("btn-toggle");
 
-// Setup Ace
-let editor = ace.edit("editor");
-let session = editor.session;
+const editor = VedicEditor.createEditor(document.getElementById("editor"), toggleBtn);
 let consoleMessages = [];
 let latestRun = 0;
 
@@ -31,59 +29,6 @@ let editorLib = {
             newLogItem.appendChild(newLogText);
 
             consoleLogList.appendChild(newLogItem);
-        });
-    },
-    init() {
-        session.setMode("ace/mode/vedic");
-        editor.renderer.setPadding(12);
-        editor.renderer.setScrollMargin(12, 12);
-        editor.setOptions({
-            wrap: true,
-            // wrap text to view
-            showPrintMargin: false,
-            indentedSoftWrap: false,
-            behavioursEnabled: false,
-            enableBasicAutocompletion: [
-                {
-                    getCompletions: function (
-                        editor,
-                        session,
-                        pos,
-                        prefix,
-                        callback
-                    ) {
-                        var kwList = [
-                            ["maana", "मान"],
-                            ["vad", "वद"],
-                            ["yadi", "यदि"],
-                            ["atha", "अथ"],
-                            ["satya", "सत्य"],
-                            ["asatya", "असत्य"],
-                            ["sUtra", "सूत्र"],
-                            ["phala", "फल"],
-                            ["chakram", "चक्रम्"],
-                            ["paryantam", "पर्यन्तम्"],
-                            ["virAm", "विराम्"],
-                            ["nirdesha", "निर्देश"],
-                            ["yada", "यद"],
-                            ["yadabhAve", "यदभावे"],
-                            ["avahan", "अवहन्"],
-                        ];
-                        callback(
-                            null,
-                            kwList.map(function (kw) {
-                                return {
-                                    value: kw[0],
-                                    meta: kw[1],
-                                };
-                            })
-                        );
-                    },
-                },
-            ],
-            // to make popup appear automatically, without explicit _ctrl+space_
-            enableLiveAutocompletion: true,
-            // disable autopairing of brackets and tags
         });
     },
 };
@@ -134,7 +79,6 @@ resetCodeBtn.addEventListener("click", () => {
     latestRun++;
     resetOutput();
 });
-editorLib.init();
 
 // examples
 const examples = new Map([
@@ -184,8 +128,7 @@ function loadExample(name) {
     latestRun++;
     examplesElm.value = name;
     document.getElementById("filename").textContent = name.endsWith(".ved") ? name : name + ".ved";
-    editor.setValue(examples.get(name), -1);
-    editor.clearSelection();
+    editor.setValue(examples.get(name));
 }
 
 const requestedExample = new URLSearchParams(window.location.search).get("example");
@@ -205,26 +148,4 @@ examplesElm.addEventListener("change", () => {
     loadExample(name);
     updateExampleURL(name);
     runCode();
-});
-editor.container.addEventListener("keydown", (key) => {
-    if (toggleBtn.checked) {
-        if (key.code == "Space" || key.code == "Enter") {
-            let pos = session.selection.getCursor();
-            let text = session.doc.$lines[pos.row]
-                .slice(0, pos.column)
-                .split(" ")
-                .pop();
-            let sanskrit = Sanscript.t(text, "itrans", "devanagari");
-            editor.session.replace(
-                {
-                    start: {
-                        row: pos.row,
-                        column: pos.column - text.length,
-                    },
-                    end: pos,
-                },
-                sanskrit
-            );
-        }
-    }
 });

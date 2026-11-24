@@ -33,13 +33,15 @@ Then open [http://localhost:8000](http://localhost:8000). The browser IDE needs 
 
 ### Test the first run
 
-Run these commands from the repository root with a Python virtual environment active. The smoke test starts its own local server and runs the bundled WebAssembly interpreter in Chromium.
+Run these commands from the repository root with a Python virtual environment active. The smoke test starts its own local server and runs the bundled WebAssembly interpreter in Chromium and Firefox. It also checks clicking, selecting, and deleting inside Devanagari words.
 
 ```bash
 python -m pip install -r tests/requirements.txt
-python -m playwright install --only-shell chromium
+python -m playwright install --only-shell chromium firefox
 python tests/browser_smoke.py
 ```
+
+The static site includes the editor bundle. After changing [the editor source](js/source-editor.js) or its dependencies, run `npm ci` and `npm run build:editor`, then commit the updated files in `vendor/`. CI checks that the bundle matches the source.
 
 ## Author
 

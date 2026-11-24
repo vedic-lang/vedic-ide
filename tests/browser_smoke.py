@@ -7,9 +7,70 @@ from urllib.parse import parse_qs, urlsplit
 from playwright.sync_api import expect, sync_playwright
 
 
-def check_examples(base_url):
+def check_cursor_edits(page):
+    phrase = "दुर्गम दुर्गम दुर्गम Durgam"
+    source = f'# first line\nवद("{phrase}");'
+    page.locator("#file-picker").set_input_files({
+        "name": "cursor.ved", "mimeType": "text/plain", "buffer": source.encode()
+    })
+    expect(page.locator("#filename")).to_have_text("cursor.ved")
+
+    # Click the actual rendered glyph boundary inside the second word. Computing
+    # coordinates through the editor would repeat the same bug as its hit testing.
+    token = page.locator("#editor").get_by_text(f'"{phrase}"', exact=True)
+    x, y = token.evaluate("""(span, prefix) => {
+        const range = new Range();
+        range.setStart(span.firstChild, prefix.length);
+        range.collapse(true);
+        const box = range.getBoundingClientRect();
+        return [box.x, box.y + box.height / 2];
+    }""", '"दुर्गम दुर्ग')
+    page.mouse.click(x, y)
+    page.keyboard.insert_text("X")
+    expect(page.locator("#editor")).to_contain_text("दुर्गम दुर्गXम दुर्गम Durgam")
+
+    page.keyboard.press("Backspace")  # X
+    page.keyboard.press("Backspace")  # र्ग
+    expect(page.locator("#editor")).to_contain_text("दुर्गम दुम दुर्गम Durgam")
+    page.keyboard.press("ArrowLeft")
+    page.keyboard.press("Shift+ArrowRight")  # select दु
+    page.keyboard.insert_text("कि")
+    expect(page.locator("#editor")).to_contain_text("दुर्गम किम दुर्गम Durgam")
+    page.keyboard.press("ArrowLeft")
+    page.keyboard.press("Delete")  # कि
+    page.keyboard.press("Control+Enter")
+    expect(page.locator("#console-logs .log")).to_have_text(["> दुर्गम म दुर्गम Durgam"])
+
+    page.keyboard.press("Home")
+    page.keyboard.press("Backspace")
+    expect(page.locator("#editor")).to_contain_text('# first lineवद("दुर्गम म दुर्गम Durgam");')
+
+
+def check_transliteration(page):
+    page.locator("#file-picker").set_input_files({
+        "name": "typing.ved", "mimeType": "text/plain", "buffer": b""
+    })
+    expect(page.locator("#filename")).to_have_text("typing.ved")
+    field = page.get_by_role("textbox", name="Vedic code editor")
+    field.press_sequentially("kavi")
+    field.press("Space")
+    expect(field).to_contain_text("कवि")
+    toggle = page.get_by_role("checkbox", name="Transliteration")
+    toggle.uncheck()
+    field.press_sequentially("kavi")
+    field.press("Enter")
+    expect(field).to_contain_text("कवि kavi")
+    field.press_sequentially("vad")
+    field.press("Control+Space")
+    expect(page.get_by_role("listbox")).to_be_visible()
+    field.press("Escape")
+    toggle.check()
+
+
+def check_examples(base_url, browser_name):
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch()
+        browser = getattr(playwright, browser_name).launch()
+        print(f"Testing {browser_name} {browser.version}", flush=True)
         page = browser.new_page(viewport={"width": 1280, "height": 800})
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
@@ -37,7 +98,7 @@ def check_examples(base_url):
 
         expect(page.locator("#filename")).to_have_text("sutra.ved")
         page.get_by_role("button", name="Find in file").click()
-        expect(page.locator(".ace_search_field").first).to_be_visible()
+        expect(page.get_by_role("textbox", name="Find", exact=True)).to_be_visible()
         page.keyboard.press("Escape")
         page.get_by_role("tab", name="Reference").click()
         expect(page.get_by_role("heading", name="Quick reference")).to_be_visible()
@@ -48,7 +109,7 @@ def check_examples(base_url):
         expect(page.locator("#runs li").first).to_contain_text("sutra.ved · Finished")
         page.locator(".history summary").click()
 
-        source = 'वद("परीक्षा");'
+        source = '# CRLF\r\nवद("परीक्षा");'
         page.locator("#file-picker").set_input_files({
             "name": "test.ved", "mimeType": "text/plain", "buffer": source.encode()
         })
@@ -59,7 +120,7 @@ def check_examples(base_url):
         with page.expect_download() as download:
             page.get_by_role("button", name="Download file").click()
         assert download.value.suggested_filename == "test.ved"
-        assert download.value.path().read_text() == source
+        assert download.value.path().read_bytes() == source.encode()
 
         page.locator("#file-picker").set_input_files({
             "name": "error.ved", "mimeType": "text/plain", "buffer": 'मान अ = ;'.encode()
@@ -68,6 +129,9 @@ def check_examples(base_url):
         run.click()
         expect(page.locator("#runtime-status")).to_have_text("Failed")
         expect(page.locator(".log--error").first).not_to_contain_text("undefined: undefined")
+
+        check_cursor_edits(page)
+        check_transliteration(page)
 
         page.get_by_role("button", name="Dark theme").click()
         page.goto(base_url + "?example=sutra.ved")
@@ -99,7 +163,8 @@ if __name__ == "__main__":
         server_thread = Thread(target=server.serve_forever)
         server_thread.start()
         try:
-            check_examples(f"http://127.0.0.1:{server.server_port}/")
+            for browser_name in ("chromium", "firefox"):
+                check_examples(f"http://127.0.0.1:{server.server_port}/", browser_name)
         finally:
             server.shutdown()
             server_thread.join()

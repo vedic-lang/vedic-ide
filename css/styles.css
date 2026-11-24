@@ -136,15 +136,20 @@ svg.chevron { width: 14px; height: 14px; }
 .tabs svg { width: 15px; }
 #btn-clear { align-self: center; margin: 0 4px; }
 
-#editor { min-height: 0; font: 16px/1.6 var(--code-font); background: var(--surface); color: var(--ink); }
-#editor .ace_gutter { background: var(--surface); color: var(--muted); }
-#editor .ace_gutter-active-line, #editor .ace_active-line { background: var(--chrome); }
-#editor .ace_cursor { color: var(--ink); }
-#editor .ace_selection { background: color-mix(in srgb, var(--accent) 28%, transparent); }
-#editor .ace_keyword, #editor .ace_numeric { color: var(--accent); }
-#editor .ace_string { color: var(--string); }
-#editor .ace_comment { color: var(--muted); font-style: italic; }
-#editor .ace_support { color: var(--success); }
+#editor { min-height: 0; min-width: 0; background: var(--surface); color: var(--ink); }
+#editor .cm-editor { height: 100%; font: 16px/1.6 var(--code-font); }
+#editor .cm-focused { outline: none; }
+#editor .cm-scroller { overflow: auto; font: inherit; }
+#editor .cm-content { padding: 12px 0; caret-color: var(--ink); }
+#editor .cm-line { padding: 0 12px; }
+#editor .cm-gutters { background: var(--surface); color: var(--muted); border-color: var(--line); }
+#editor .cm-activeLine { background: var(--chrome); }
+#editor .cm-panels, #editor .cm-tooltip { background: var(--chrome); color: var(--ink); }
+#editor .cm-textfield, #editor .cm-button { color: var(--ink); background: var(--surface); }
+#editor .tok-keyword, #editor .tok-number { color: var(--accent); }
+#editor .tok-string { color: var(--string); }
+#editor .tok-comment { color: var(--muted); font-style: italic; }
+#editor .tok-atom { color: var(--success); }
 #output, .reference { position: relative; min-height: 0; overflow: auto; }
 .empty-console {
     position: absolute;
