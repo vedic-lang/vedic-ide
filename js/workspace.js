@@ -84,7 +84,7 @@ themeButton.addEventListener("click", () => {
 
 document.getElementById("find").addEventListener("click", () => {
     editor.focus();
-    editor.execCommand("find");
+    editor.find();
 });
 
 document.getElementById("open-file").addEventListener("click", () => filePicker.click());
@@ -96,7 +96,7 @@ filePicker.addEventListener("change", async () => {
     try {
         const source = await file.text();
         if (revision !== latestRun) return;
-        editor.setValue(source, -1);
+        editor.setValue(source);
         filename.textContent = file.name;
         examplesElm.selectedIndex = -1;
         updateExampleURL(null);
@@ -124,9 +124,3 @@ document.addEventListener("keydown", (event) => {
         if (!executeCodeBtn.disabled) runCode();
     }
 }, true);
-
-session.selection.on("changeCursor", () => {
-    const cursor = editor.getCursorPosition();
-    document.getElementById("position").textContent = `Ln ${cursor.row + 1}, Col ${cursor.column + 1}`;
-});
-new ResizeObserver(() => editor.resize()).observe(editor.container);
