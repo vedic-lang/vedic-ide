@@ -7,6 +7,50 @@ from urllib.parse import parse_qs, urlsplit
 from playwright.sync_api import expect, sync_playwright
 
 
+def check_missing_delimiters(page):
+    run = page.get_by_role("button", name="Run", exact=True)
+    for filename, before, after, delimiter, output in [
+        ("semicolon.ved", '\tमान नाम = "दुर्गम"', '  # नाम\r\nवद(नाम);', ";", "दुर्गम"),
+        ("parenthesis.ved", 'वद(("दुर्गम")', ";", ")", "दुर्गम"),
+    ]:
+        source = "# test\r\n" + before + after
+
+        def open_source(text):
+            page.locator("#file-picker").set_input_files({
+                "name": filename, "mimeType": "text/plain", "buffer": text.encode()
+            })
+            expect(page.get_by_text("Run a program to see its output.")).to_be_visible()
+
+        open_source(source)
+        run.click()
+        error = page.locator(".log--error")
+        expect(error).to_have_count(1)
+        expect(page.locator("#runtime-status")).to_have_text("Failed")
+        expect(error).to_contain_text(f'File "{filename}", line 2, column {len(before) + 1}')
+        line = (before + after).splitlines()[0]
+        hint = f"^ insert '{delimiter}' here"
+        expect(error).to_contain_text(line)
+        expect(error).to_contain_text(hint)
+
+        # Measure the caret against the actual glyph boundary, including tabs and conjuncts.
+        offset = error.evaluate("""(log, {line, before}) => {
+            const text = log.firstChild;
+            const start = text.data.indexOf("\\n    " + line + "\\n") + 5;
+            const range = new Range();
+            range.setStart(text, start + before.length);
+            range.collapse(true);
+            const expectedX = range.getBoundingClientRect().left;
+            range.setStart(log.lastChild, 0);
+            range.setEnd(log.lastChild, 1);
+            return range.getBoundingClientRect().left - expectedX;
+        }""", {"line": line, "before": before})
+        assert abs(offset) <= 1, (filename, offset)
+
+        open_source("# test\r\n" + before + delimiter + after)
+        run.click()
+        expect(page.locator("#console-logs .log")).to_have_text(["> " + output])
+
+
 def check_cursor_edits(page):
     phrase = "दुर्गम दुर्गम दुर्गम Durgam"
     source = f'# first line\nवद("{phrase}");'
@@ -130,6 +174,7 @@ def check_examples(base_url, browser_name):
         expect(page.locator("#runtime-status")).to_have_text("Failed")
         expect(page.locator(".log--error").first).not_to_contain_text("undefined: undefined")
 
+        check_missing_delimiters(page)
         check_cursor_edits(page)
         check_transliteration(page)
 

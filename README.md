@@ -21,6 +21,8 @@ The IDE opens with Hello World. Press **Run** to see `नमस्ते वि�
 
 The editor and console sit side by side on desktop and stack on phones. Use **Ctrl+Enter** (or **⌘+Enter** on macOS) to run the current file. **Open local file** and **Download** work with UTF-8 source on your device. **Reference** lists common Vedic expressions, and **Run history** shows the last 20 runs in this session.
 
+When the compiler expects a semicolon or closing parenthesis, the console shows the filename, the source line, and a caret where you can insert the punctuation.
+
 ### Run locally
 
 From this repository's directory, start a local web server:

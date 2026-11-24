@@ -24,7 +24,19 @@ let editorLib = {
             const newLogText = document.createElement("pre");
 
             newLogText.className = log.class;
-            newLogText.textContent = `> ${log.message}`;
+            if (log.insertion) {
+                const {heading, line, prefix, hint} = log.insertion;
+                newLogText.classList.add("log--insertion");
+                newLogText.textContent = `> ${heading}\n    ${line}\n    `;
+                // Match the width of the shaped glyphs and tab stops in the source line.
+                const spacer = document.createElement("span");
+                spacer.className = "diagnostic-prefix";
+                spacer.setAttribute("aria-hidden", "true");
+                spacer.textContent = prefix;
+                newLogText.append(spacer, hint);
+            } else {
+                newLogText.textContent = `> ${log.message}`;
+            }
 
             newLogItem.appendChild(newLogText);
 
@@ -60,7 +72,7 @@ async function runCode() {
                 : `Unable to load the Vedic WebAssembly module: ${wasmError.message || wasmError}`;
             throw new Error(message);
         }
-        vedic(userCode);
+        wasm_bindgen.vedic_with_path(userCode, file);
     } catch (err) {
         console.error(err);
     }
