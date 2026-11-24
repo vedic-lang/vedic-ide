@@ -51,6 +51,24 @@ def check_missing_delimiters(page):
         expect(page.locator("#console-logs .log")).to_have_text(["> " + output])
 
 
+def check_import_keyword(page):
+    run = page.get_by_role("button", name="Run", exact=True)
+    for spelling, expected in [
+        ("आवाहन", "सञ्चिकाः आवाहनं कर्तुं असमर्थः"),
+        ("अवहन", "^ insert ';' here"),
+    ]:
+        source = f'{spelling} "./library.ved";'
+        page.locator("#file-picker").set_input_files({
+            "name": "import.ved", "mimeType": "text/plain", "buffer": source.encode()
+        })
+        expect(page.get_by_role("textbox", name="Vedic code editor")).to_have_text(source)
+        expect(page.locator("#editor .tok-keyword")).to_have_text(
+            ["आवाहन"] if spelling == "आवाहन" else []
+        )
+        run.click()
+        expect(page.locator(".log--error")).to_contain_text(expected)
+
+
 def check_cursor_edits(page):
     phrase = "दुर्गम दुर्गम दुर्गम Durgam"
     source = f'# first line\nवद("{phrase}");'
@@ -96,6 +114,9 @@ def check_transliteration(page):
     })
     expect(page.locator("#filename")).to_have_text("typing.ved")
     field = page.get_by_role("textbox", name="Vedic code editor")
+    field.press_sequentially("AvAhana")
+    field.press("Space")
+    expect(field.locator(".tok-keyword")).to_have_text("आवाहन")
     field.press_sequentially("kavi")
     field.press("Space")
     expect(field).to_contain_text("कवि")
@@ -175,6 +196,7 @@ def check_examples(base_url, browser_name):
         expect(page.locator(".log--error").first).not_to_contain_text("undefined: undefined")
 
         check_missing_delimiters(page)
+        check_import_keyword(page)
         check_cursor_edits(page)
         check_transliteration(page)
 

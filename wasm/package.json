@@ -3,7 +3,7 @@
   "collaborators": [
     "Pt. Prashant Tripathi <ptprashanttripathi@outlook.com>"
   ],
-  "version": "2.1.0",
+  "version": "3.0.0",
   "files": [
     "vedic_wasm_bg.wasm",
     "vedic_wasm.js",
