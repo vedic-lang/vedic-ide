@@ -6,7 +6,7 @@ import {EditorState} from "@codemirror/state";
 import {Decoration, EditorView, ViewPlugin, highlightActiveLine, keymap, lineNumbers} from "@codemirror/view";
 import {classHighlighter} from "@lezer/highlight";
 
-const keywords = new Set("मान यदि अथ सत्य असत्य न सूत्र फल विधि सन्धि मित्र मम चक्र पर्यन्त विराम अग्रिम निर्देश अवहन".split(" "));
+const keywords = new Set("मान यदि अथ सत्य असत्य न सूत्र फल विधि सन्धि मित्र मम चक्र पर्यन्त विराम अग्रिम निर्देश आवाहन".split(" "));
 const builtins = new Set("वद पठन समय कुल प्रकार निर्गम त्रुटि लभ्यते शब्द अंक".split(" "));
 const language = StreamLanguage.define({
     startState: () => ({quote: null}),
@@ -42,7 +42,7 @@ const language = StreamLanguage.define({
 const completions = completeFromList(Object.entries({
     maana: "मान", vad: "वद", yadi: "यदि", atha: "अथ", satya: "सत्य", asatya: "असत्य",
     sUtra: "सूत्र", phala: "फल", chakram: "चक्रम्", paryantam: "पर्यन्तम्", virAm: "विराम्",
-    nirdesha: "निर्देश", yada: "यद", yadabhAve: "यदभावे", avahan: "अवहन्",
+    nirdesha: "निर्देश", yada: "यद", yadabhAve: "यदभावे", AvAhana: "आवाहन",
 }).map(([label, detail]) => ({label, detail})));
 
 const segmenter = typeof Intl.Segmenter === "function"
